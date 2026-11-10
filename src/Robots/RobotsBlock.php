@@ -112,11 +112,11 @@ final class RobotsBlock
     private function naglowek(string $kategoria): string
     {
         $naglowki = [
-            'answer' => 'Answer engines — blocked by the shop',
-            'training' => 'AI training bots — blocked by the shop',
-            'seo' => 'SEO tools — blocked by the shop',
-            'monitoring' => 'Monitoring — blocked by the shop',
-            'other' => 'Other bots — blocked by the shop',
+            'answer' => 'Answer engines: blocked by the shop',
+            'training' => 'AI training bots: blocked by the shop',
+            'seo' => 'SEO tools: blocked by the shop',
+            'monitoring' => 'Monitoring: blocked by the shop',
+            'other' => 'Other bots: blocked by the shop',
         ];
 
         return $naglowki[$kategoria] ?? 'Blocked by the shop';

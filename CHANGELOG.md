@@ -4,6 +4,13 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-11-10
+
+### Changed
+
+- Polish translation completed: the texts added since the previous translation are now translated.
+- Texts no longer use long dashes.
+
 ## [0.1.1] - 2026-11-10
 
 ### Fixed

@@ -33,8 +33,8 @@
         <note>src/Controller/Admin/RobotsController.php</note>
       </trans-unit>
       <trans-unit id="28bf393828d0a4c4271dbbd5ba7bc70a">
-        <source>%count% entries are no longer on the source list. They keep working and keep your decision — the list simply stopped carrying them.</source>
-        <target>Wpisów, których nie ma już na liście źródłowej: %count%. Działają dalej i zachowują Twoją decyzję — lista po prostu przestała je nieść.</target>
+        <source>%count% entries are no longer on the source list. They keep working and keep your decision. The list simply stopped carrying them.</source>
+        <target>Wpisów, których nie ma już na liście źródłowej: %count%. Działają dalej i zachowują Twoją decyzję. Lista po prostu przestała je nieść.</target>
         <note>src/Controller/Admin/RobotsController.php</note>
       </trans-unit>
       <trans-unit id="63def935b9f1962eec4951db826125f7">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="201944693d01e9e3ad7b007f3bf5962c">
         <source>A blocked bot that respects robots.txt is not refused. The file already did the work, and refusing it would only add a way to get things wrong. Refusal applies to bots known to ignore the file, and only once reverse DNS confirms the bot is who it claims to be.</source>
-        <target>Zablokowanego bota, który szanuje robots.txt, nie odrzucamy — plik już zrobił swoje, a odrzucanie dokładałoby tylko sposobność do pomyłki. Odrzucanie dotyczy botów, o których wiadomo, że plik ignorują, i dopiero wtedy, gdy odwrotny DNS potwierdzi, że bot jest tym, za kogo się podaje.</target>
+        <target>Zablokowanego bota, który szanuje robots.txt, nie odrzucamy: plik już zrobił swoje, a odrzucanie dokładałoby tylko sposobność do pomyłki. Odrzucanie dotyczy botów, o których wiadomo, że plik ignorują, i dopiero wtedy, gdy odwrotny DNS potwierdzi, że bot jest tym, za kogo się podaje.</target>
         <note>views/templates/admin/settings.html.twig</note>
       </trans-unit>
       <trans-unit id="8688f6c21947f10e0ada4f2028c4416e">
@@ -69,12 +69,12 @@
       </trans-unit>
       <trans-unit id="a26e8ea78368039f87f1821cea91bbb2">
         <source>A person browsing quickly does 20 to 40. A shared office address does more.</source>
-        <target>Człowiek szybko przeglądający sklep robi 20 do 40. Wspólny adres biura — więcej.</target>
+        <target>Człowiek szybko przeglądający sklep robi 20 do 40. Wspólny adres biura: więcej.</target>
         <note>views/templates/admin/settings.html.twig</note>
       </trans-unit>
       <trans-unit id="c8fb2ba64270cafd069a31a1c996b77b">
         <source>A visit adds one to a counter. The module keeps no record of individual requests and stores no IP addresses. Last 30 days.</source>
-        <target>Wizyta dokłada jeden do licznika — moduł nie zapisuje pojedynczych żądań ani adresów IP. Ostatnie 30 dni.</target>
+        <target>Wizyta dokłada jeden do licznika. Moduł nie zapisuje pojedynczych żądań ani adresów IP. Ostatnie 30 dni.</target>
         <note>views/templates/admin/traffic.html.twig</note>
       </trans-unit>
       <trans-unit id="6f9aa6d5f94e5efb6d90513a3ac7f044">
@@ -203,8 +203,8 @@
         <note>views/templates/admin/settings.html.twig</note>
       </trans-unit>
       <trans-unit id="9f08dcae86662a716f3f25f9497191f7">
-        <source>Entries from the registry that actually came by. "Days seen" is how many separate days it showed up on — a bot that took 500 pages in one afternoon reads differently from one that looks in every day.</source>
-        <target>Wpisy z rejestru, które naprawdę się pojawiły. „Dni z wizytami” to liczba osobnych dni, w których bot się pokazał — bo ten, który wziął pięćset stron w jedno popołudnie, znaczy co innego niż ten, który zagląda codziennie.</target>
+        <source>Entries from the registry that actually came by. "Days seen" is how many separate days it showed up on: a bot that took 500 pages in one afternoon reads differently from one that looks in every day.</source>
+        <target>Wpisy z rejestru, które naprawdę się pojawiły. „Dni z wizytami” to liczba osobnych dni, w których bot się pokazał, bo ten, który wziął pięćset stron w jedno popołudnie, znaczy co innego niż ten, który zagląda codziennie.</target>
         <note>views/templates/admin/traffic.html.twig</note>
       </trans-unit>
       <trans-unit id="687985c4547a5eb97deaba95a6dcd28e">
@@ -334,7 +334,7 @@
       </trans-unit>
       <trans-unit id="5d74fc5ace2fd460749c0314a8c8c5ee">
         <source>Only blocks. An allowed bot gets no group of its own on purpose. A group would cut it off from the rules the shop sets for everyone.</source>
-        <target>Same zakazy. Wpuszczony bot celowo nie dostaje własnej grupy — grupa odcięłaby go od reguł, które sklep ustawia dla wszystkich.</target>
+        <target>Same zakazy. Wpuszczony bot celowo nie dostaje własnej grupy: grupa odcięłaby go od reguł, które sklep ustawia dla wszystkich.</target>
         <note>views/templates/admin/file.html.twig</note>
       </trans-unit>
       <trans-unit id="ea54b6b43fc33424442bf216dcfbeb4f">
@@ -494,7 +494,7 @@
       </trans-unit>
       <trans-unit id="44c570c7fddd12f7faa02639e34b9fc7">
         <source>The file is fetched over HTTP, the way a bot would read it. Not from disk. A server rule or a redirect can stand between the two.</source>
-        <target>Plik pobieramy po HTTP, tak jak czytałby go robot — nie z dysku. Między jednym a drugim potrafi stanąć reguła serwera albo przekierowanie.</target>
+        <target>Plik pobieramy po HTTP, tak jak czytałby go robot, nie z dysku. Między jednym a drugim potrafi stanąć reguła serwera albo przekierowanie.</target>
         <note>views/templates/admin/test.html.twig</note>
       </trans-unit>
       <trans-unit id="a4a189b7261bda8bdc088424c2725920">
@@ -534,12 +534,12 @@
       </trans-unit>
       <trans-unit id="83bfc00fb5f947eb8026b04c6530de15">
         <source>This fragment becomes the entry's fingerprint. From the moment you save it, any request whose header carries it counts as this bot. Leave the name without the version number, or the entry stops working when the vendor changes it.</source>
-        <target>Ten fragment stanie się znakiem rozpoznawczym wpisu. Od zapisania każde żądanie, którego nagłówek go zawiera, będzie liczone jako ten bot. Zostaw sam człon nazwy, bez numeru wersji — inaczej wpis przestanie działać, gdy producent ją zmieni.</target>
+        <target>Ten fragment stanie się znakiem rozpoznawczym wpisu. Od zapisania każde żądanie, którego nagłówek go zawiera, będzie liczone jako ten bot. Zostaw sam człon nazwy, bez numeru wersji, inaczej wpis przestanie działać, gdy producent ją zmieni.</target>
         <note>views/templates/admin/traffic.html.twig</note>
       </trans-unit>
       <trans-unit id="5f700dd494bd7763c7e6391327ff137a">
         <source>This one counts everybody, customers included. The traffic it guards against does not identify itself. A threshold set too low turns real customers away, and you hear about it from them, not from here. Leave it off unless you have a reason.</source>
-        <target>Ten próg liczy wszystkich, także klientów — ruch, przed którym chroni, się nie przedstawia. Za nisko ustawiony odsyła prawdziwych klientów, a dowiadujesz się o tym od nich, nie stąd. Zostaw wyłączony, jeśli nie masz powodu.</target>
+        <target>Ten próg liczy wszystkich, także klientów: ruch, przed którym chroni, się nie przedstawia. Za nisko ustawiony odsyła prawdziwych klientów, a dowiadujesz się o tym od nich, nie stąd. Zostaw wyłączony, jeśli nie masz powodu.</target>
         <note>views/templates/admin/settings.html.twig</note>
       </trans-unit>
       <trans-unit id="2f3651c032fa2771c5fd433f916ed7d8">
@@ -554,7 +554,7 @@
       </trans-unit>
       <trans-unit id="b4f9c9c0c8ac8a99e931ef9eef8872f8">
         <source>Until the file answers, no rule in it reaches any bot. Whatever the decisions screen says.</source>
-        <target>Dopóki plik nie odpowiada, żadna reguła z niego nie dociera do robotów — cokolwiek mówi ekran decyzji.</target>
+        <target>Dopóki plik nie odpowiada, żadna reguła z niego nie dociera do robotów, cokolwiek mówi ekran decyzji.</target>
         <note>views/templates/admin/test.html.twig</note>
       </trans-unit>
       <trans-unit id="21d4be09479a2aac7d953f01386f49bb">
@@ -659,7 +659,7 @@
       </trans-unit>
       <trans-unit id="e921ba084091eff2e94b29841ac9bd35">
         <source>no group. Nothing forbidden</source>
-        <target>brak grupy — nic nie zabronione</target>
+        <target>brak grupy. Nic nie zabronione</target>
         <note>views/templates/admin/test.html.twig</note>
       </trans-unit>
       <trans-unit id="c2a43ad51c7f9eba3682d55fc0bf9a36">
@@ -706,6 +706,11 @@
         <source>your choice</source>
         <target>twój wybór</target>
         <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="853e0b6934a0808c20231177c795df2d">
+        <source>Invalid security token, please try again.</source>
+        <target>Nieprawidłowy token bezpieczeństwa, spróbuj ponownie.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
       </trans-unit>
     </body>
   </file>

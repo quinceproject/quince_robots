@@ -33,8 +33,8 @@
         <note>src/Controller/Admin/RobotsController.php</note>
       </trans-unit>
       <trans-unit id="28bf393828d0a4c4271dbbd5ba7bc70a">
-        <source>%count% entries are no longer on the source list. They keep working and keep your decision — the list simply stopped carrying them.</source>
-        <target>%count% entries are no longer on the source list. They keep working and keep your decision — the list simply stopped carrying them.</target>
+        <source>%count% entries are no longer on the source list. They keep working and keep your decision. The list simply stopped carrying them.</source>
+        <target>%count% entries are no longer on the source list. They keep working and keep your decision. The list simply stopped carrying them.</target>
         <note>src/Controller/Admin/RobotsController.php</note>
       </trans-unit>
       <trans-unit id="63def935b9f1962eec4951db826125f7">
@@ -203,8 +203,8 @@
         <note>views/templates/admin/settings.html.twig</note>
       </trans-unit>
       <trans-unit id="9f08dcae86662a716f3f25f9497191f7">
-        <source>Entries from the registry that actually came by. "Days seen" is how many separate days it showed up on — a bot that took 500 pages in one afternoon reads differently from one that looks in every day.</source>
-        <target>Entries from the registry that actually came by. "Days seen" is how many separate days it showed up on — a bot that took 500 pages in one afternoon reads differently from one that looks in every day.</target>
+        <source>Entries from the registry that actually came by. "Days seen" is how many separate days it showed up on: a bot that took 500 pages in one afternoon reads differently from one that looks in every day.</source>
+        <target>Entries from the registry that actually came by. "Days seen" is how many separate days it showed up on: a bot that took 500 pages in one afternoon reads differently from one that looks in every day.</target>
         <note>views/templates/admin/traffic.html.twig</note>
       </trans-unit>
       <trans-unit id="687985c4547a5eb97deaba95a6dcd28e">

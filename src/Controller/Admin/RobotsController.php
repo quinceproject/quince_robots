@@ -334,7 +334,7 @@ final class RobotsController extends QuinceController
 
         if ($wynik['dropped'] > 0) {
             $this->addFlash('info', $this->trans(
-                '%count% entries are no longer on the source list. They keep working and keep your decision — the list simply stopped carrying them.',
+                '%count% entries are no longer on the source list. They keep working and keep your decision. The list simply stopped carrying them.',
                 self::DOMENA,
                 ['%count%' => $wynik['dropped']]
             ));
