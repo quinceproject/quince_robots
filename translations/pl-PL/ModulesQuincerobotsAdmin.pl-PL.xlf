@@ -548,8 +548,8 @@
         <note>views/templates/admin/traffic.html.twig</note>
       </trans-unit>
       <trans-unit id="c3395bcfc661c37fcebdb286f6e0326e">
-        <source>Uninstall the module? The rules it wrote into robots.txt disappear with it, and every bot is allowed again.</source>
-        <target>Odinstalować moduł? Reguły, które wpisał do robots.txt, znikną razem z nim, a każdy bot znów będzie wpuszczany.</target>
+        <source>Uninstall the module? Its rules stay in robots.txt until PrestaShop generates the file again (Shop Parameters &gt; Traffic &amp; SEO). After that every bot is allowed again.</source>
+        <target>Odinstalować moduł? Jego reguły zostaną w robots.txt, dopóki PrestaShop nie wygeneruje pliku od nowa (Parametry sklepu &gt; Ruch i SEO). Potem każdy bot znów będzie wpuszczany.</target>
         <note>quince_robots.php</note>
       </trans-unit>
       <trans-unit id="b4f9c9c0c8ac8a99e931ef9eef8872f8">

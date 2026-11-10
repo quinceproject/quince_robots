@@ -51,7 +51,7 @@ class Quince_Robots extends Module
     {
         $this->name = 'quince_robots';
         $this->tab = 'administration';
-        $this->version = '0.1.0';
+        $this->version = '0.1.1';
         $this->author = 'Quince Project';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '9.0.0', 'max' => '9.99.99'];
@@ -87,7 +87,7 @@ class Quince_Robots extends Module
             'Modules.Quincerobots.Admin'
         );
         $this->confirmUninstall = $this->trans(
-            'Uninstall the module? The rules it wrote into robots.txt disappear with it, and every bot is allowed again.',
+            'Uninstall the module? Its rules stay in robots.txt until PrestaShop generates the file again (Shop Parameters > Traffic & SEO). After that every bot is allowed again.',
             [],
             'Modules.Quincerobots.Admin'
         );
