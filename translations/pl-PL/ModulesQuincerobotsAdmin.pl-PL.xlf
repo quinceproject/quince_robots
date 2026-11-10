@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="ModulesQuincerobotsAdmin" source-language="en-US" target-language="pl-PL" datatype="plaintext">
+    <body>
+      <trans-unit id="29357b93f8d1fd84465cd1e0a0afcb31">
+        <source>%added% bots added, %updated% updated. Your decisions were left untouched.</source>
+        <target>Dodano botów: %added%, odświeżono: %updated%. Twoje decyzje zostały nietknięte.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="2f57691bfcb7cb6044a3396b5deac01e">
+        <source>%count% addresses are being kept out right now.</source>
+        <target>Adresów odstawionych w tej chwili: %count%.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c2c1ef13d87fe8142aac8323d1f5bb61">
+        <source>%count% blocked bots are refused at the door.</source>
+        <target>Zablokowanych botów odrzucanych na wejściu: %count%.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ad0d861bd26a42853b2a61c742b41ef7">
+        <source>%count% bots are treated differently than you decided. Write robots.txt to line them up.</source>
+        <target>Botów traktowanych inaczej, niż postanowiłeś: %count%. Zapisz robots.txt, żeby to uzgodnić.</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="735de7f26f1834bdf0d4c2f82702fcbc">
+        <source>%count% days of counter history removed.</source>
+        <target>Skasowano dni historii licznika: %count%.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="c31800847c89391f6fbe59633e67ef46">
+        <source>%count% decisions saved.</source>
+        <target>Zapisano decyzji: %count%.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="28bf393828d0a4c4271dbbd5ba7bc70a">
+        <source>%count% entries are no longer on the source list. They keep working and keep your decision — the list simply stopped carrying them.</source>
+        <target>Wpisów, których nie ma już na liście źródłowej: %count%. Działają dalej i zachowują Twoją decyzję — lista po prostu przestała je nieść.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="63def935b9f1962eec4951db826125f7">
+        <source>%count% entries in the registry.</source>
+        <target>Wpisów w rejestrze: %count%.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3916fb08d722ed368a02243db0c0f679">
+        <source>%count% rows are past the term.</source>
+        <target>Wierszy po terminie: %count%.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d845d1a840f19282a2a001e918b7ba48">
+        <source>%hits% visits over %days% days, last %when%</source>
+        <target>%hits% wizyt przez %days% dni, ostatnia %when%</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="201944693d01e9e3ad7b007f3bf5962c">
+        <source>A blocked bot that respects robots.txt is not refused. The file already did the work, and refusing it would only add a way to get things wrong. Refusal applies to bots known to ignore the file, and only once reverse DNS confirms the bot is who it claims to be.</source>
+        <target>Zablokowanego bota, który szanuje robots.txt, nie odrzucamy — plik już zrobił swoje, a odrzucanie dokładałoby tylko sposobność do pomyłki. Odrzucanie dotyczy botów, o których wiadomo, że plik ignorują, i dopiero wtedy, gdy odwrotny DNS potwierdzi, że bot jest tym, za kogo się podaje.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8688f6c21947f10e0ada4f2028c4416e">
+        <source>A bot reads one User-agent group and ignores every other, including *. The group column says which one it lands in.</source>
+        <target>Robot czyta jedną grupę User-agent i ignoruje wszystkie pozostałe, razem z *. Kolumna grupy mówi, w której ląduje.</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6d599c28e1ea4358f73017cb8e839171">
+        <source>A ceiling on requests from one address, for traffic that does not introduce itself.</source>
+        <target>Górna granica żądań z jednego adresu, na ruch, który się nie przedstawia.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a26e8ea78368039f87f1821cea91bbb2">
+        <source>A person browsing quickly does 20 to 40. A shared office address does more.</source>
+        <target>Człowiek szybko przeglądający sklep robi 20 do 40. Wspólny adres biura — więcej.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c8fb2ba64270cafd069a31a1c996b77b">
+        <source>A visit adds one to a counter. The module keeps no record of individual requests and stores no IP addresses. Last 30 days.</source>
+        <target>Wizyta dokłada jeden do licznika — moduł nie zapisuje pojedynczych żądań ani adresów IP. Ostatnie 30 dni.</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6f9aa6d5f94e5efb6d90513a3ac7f044">
+        <source>Add and allow</source>
+        <target>Dodaj i wpuść</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4bd1256edac16fb248a723a87da8ee47">
+        <source>Add and block</source>
+        <target>Dodaj i zablokuj</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="45f0fb72a0defdfdb01de4b5a5a6876b">
+        <source>Allow</source>
+        <target>Wpuść</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4f542182f01f109555ba8d48d90421f3">
+        <source>Allow all</source>
+        <target>Wpuść wszystkie</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d1623427925713be7b4349aad360bc10">
+        <source>Answer engines</source>
+        <target>Wyszukiwarki odpowiedzi</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="0b6aaa05f45e611ba8e82ecc1680fb47">
+        <source>Asking the bots politely. Most of them listen.</source>
+        <target>Grzeczna prośba do robotów. Większość jej słucha.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="902dbcc4f2b6fc4c2e28782041e8e5e9">
+        <source>Automata we do not know</source>
+        <target>Automaty, których nie znamy</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e1e4c8c9ccd9fc39c391da4bcd093fb2">
+        <source>Block</source>
+        <target>Zablokuj</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4944e895ae1532fea8c5b3b27eaf817f">
+        <source>Block all</source>
+        <target>Zablokuj wszystkie</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4d364f8455d07deef2d3656c7fb03e83">
+        <source>Blocked bots</source>
+        <target>Zablokowane boty</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1448e86d90e0feb307c2894c24e87767">
+        <source>Bot</source>
+        <target>Bot</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="bb86c94b54576307b19c52d87c89c794">
+        <source>Bot list</source>
+        <target>Lista botów</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="bd994a0c93f871e172c3e06edf443722">
+        <source>Bots we know</source>
+        <target>Boty, które znamy</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3adbdb3ac060038aa0e6e6c138ef9873">
+        <source>Category</source>
+        <target>Kategoria</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="34fefa1a74dc7832bb20944cffd10242">
+        <source>Check for new bots</source>
+        <target>Sprawdź, czy są nowe boty</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b166d041dfb3f201c7bf4ed18ae01b32">
+        <source>Check whether the shop is answering. Usually your own tools.</source>
+        <target>Sprawdzają, czy sklep odpowiada. Zwykle Twoje własne narzędzia.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="ee657b1be61d2bc1bcaf72348b2a8077">
+        <source>Clean up now</source>
+        <target>Posprzątaj teraz</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d413494ff408fd02a2875dcca1a56421">
+        <source>Collect the content to train models. They take and send nothing back.</source>
+        <target>Zbierają treść, żeby trenować modele. Biorą i nie odsyłają niczego.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="c41952c0d22c995a409b82d06452fae5">
+        <source>Count visits</source>
+        <target>Licz wizyty</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="84d006c7ab374135ab1039730ab870e3">
+        <source>Counting is switched off in the settings, so nothing new is being added here.</source>
+        <target>Liczenie jest wyłączone w ustawieniach, więc nic nowego tu nie przybywa.</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0831ea9b175cba6ff7e469d390569ab0">
+        <source>Crawlers and AI agents read this shop. Decide which of them may, and the module writes it into robots.txt.</source>
+        <target>Roboty i agenty AI czytają ten sklep. Zdecyduj, które mogą, a moduł wpisze to do robots.txt.</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c6740f2b5ea8c22c2d9150fdad279d1c">
+        <source>Days seen</source>
+        <target>Dni z wizytami</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5a2a5532124b0635b7746c017f2fe137">
+        <source>Decide which crawlers and AI agents may enter the shop, and see which of them actually come.</source>
+        <target>Zdecyduj, które roboty i agenty AI mogą wejść do sklepu, i zobacz, które naprawdę przychodzą.</target>
+        <note>quince_robots.php</note>
+      </trans-unit>
+      <trans-unit id="5d30f54fc5f12894fd1afbf4d41c5969">
+        <source>Decision</source>
+        <target>Decyzja</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="61438c8d2463d6dd334a1d4b8e7b03ff">
+        <source>Enforcement</source>
+        <target>Egzekwowanie</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="9f08dcae86662a716f3f25f9497191f7">
+        <source>Entries from the registry that actually came by. "Days seen" is how many separate days it showed up on — a bot that took 500 pages in one afternoon reads differently from one that looks in every day.</source>
+        <target>Wpisy z rejestru, które naprawdę się pojawiły. „Dni z wizytami” to liczba osobnych dni, w których bot się pokazał — bo ten, który wziął pięćset stron w jedno popołudnie, znaczy co innego niż ten, który zagląda codziennie.</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="687985c4547a5eb97deaba95a6dcd28e">
+        <source>Every bot is treated the way you decided.</source>
+        <target>Każdy bot jest traktowany tak, jak postanowiłeś.</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6a0950f0d93e7746c13d14103d2ab68b">
+        <source>Everything the list does not place elsewhere.</source>
+        <target>Wszystko, czego lista nie umieszcza gdzie indziej.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="1f8f021840eb826632bb9cf34c857cf2">
+        <source>Fetching only ever refreshes descriptions and our recommendation. Your decisions, and the entries you added yourself, are never touched.</source>
+        <target>Pobranie odświeża wyłącznie opisy i naszą rekomendację. Twoje decyzje i wpisy dodane przez Ciebie zostają nietknięte.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="42337a9bed60e8abe78f2b1c42b3d35b">
+        <source>File state</source>
+        <target>Stan pliku</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b2bfcef5ea277024b90d93b869e75f62">
+        <source>Group it reads</source>
+        <target>Grupa, którą czyta</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1b9624ed50920e9896b2a8bb78649f7b">
+        <source>Has not run yet. It runs once a day, when someone opens the back office.</source>
+        <target>Jeszcze nie ruszyło. Chodzi raz na dobę, gdy ktoś wejdzie do panelu.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="44fd6389cefab81d281b501ecdbcc7f0">
+        <source>Housekeeping</source>
+        <target>Sprzątanie</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6ab27457e171dfc7c2b946a50bcdf93c">
+        <source>Keep for (months)</source>
+        <target>Trzymaj przez (miesiące)</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="93744aa27faeac15ec654b6e78d09144">
+        <source>Kept out for (minutes)</source>
+        <target>Odstawienie na (minuty)</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2dd7a229b11a08ffc4d751444dcaa76a">
+        <source>Last checked %when%.</source>
+        <target>Ostatnio sprawdzone %when%.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="bb05b7f2f8b273e18914d0c1c772d872">
+        <source>Last run: %when%.</source>
+        <target>Ostatni przebieg: %when%.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="55d95901560108d4e26d394794dd5e14">
+        <source>Last seen</source>
+        <target>Ostatnio widziany</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="fd125342ef30c0afbc53988e9385ebb0">
+        <source>Last written</source>
+        <target>Ostatni zapis</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="269a56d37678eb78ab7cebb50ebf15cb">
+        <source>Limit the rate</source>
+        <target>Ograniczaj częstość</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="008f5a267b1f0b5242452042a2139d18">
+        <source>Map links between sites. Useful if you use these tools yourself.</source>
+        <target>Mapują odnośniki między witrynami. Przydatne, jeśli sam z tych narzędzi korzystasz.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="a37a7a423e5ab13169b6f6e497bf0041">
+        <source>Model training</source>
+        <target>Trenowanie modeli</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="423e555c5ec3885f2bb5d9d2d6627f63">
+        <source>Monitoring</source>
+        <target>Monitoring</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="b25aaa877b408e2c005794ae3e2c1682">
+        <source>Name it</source>
+        <target>Nazwij</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6e05007bf1baee452ac69505b536e259">
+        <source>Never checked. The module works from its built-in list until then.</source>
+        <target>Nigdy nie sprawdzane. Do tego czasu moduł działa na liście wbudowanej.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e9c3f3652477449a8646ec598036dfa2">
+        <source>No visits recorded yet. Bots find a shop within days, not hours.</source>
+        <target>Nie zapisano jeszcze żadnej wizyty. Roboty znajdują sklep w ciągu dni, nie godzin.</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3ee6e4316a69d23b3cf95a741183bc02">
+        <source>Nothing changed.</source>
+        <target>Nic się nie zmieniło.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="bb49ce23c13fdb9c7028069d5fd2eaf4">
+        <source>Nothing here. Every automaton that came by is in the registry.</source>
+        <target>Pusto. Każdy automat, który się pojawił, jest w rejestrze.</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d12b75abc1eac09c3c1b112f89d4a513">
+        <source>Nothing is being refused right now: every bot you blocked respects robots.txt, so the file is enough.</source>
+        <target>Nic nie jest teraz odrzucane: każdy zablokowany przez Ciebie bot szanuje robots.txt, więc plik wystarcza.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="364aa93807a4a2a639250d74fd293ba4">
+        <source>Nothing is blocked, so the module writes no block at all.</source>
+        <target>Nic nie jest zablokowane, więc moduł nie dopisuje żadnego bloku.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="602a5f96ea34590ab6fdaa6001f7a36c">
+        <source>One row per bot per day, one added per visit. No addresses are stored.</source>
+        <target>Jeden wiersz na bota na dzień, jeden dokładany przy każdej wizycie. Adresów nie przechowujemy.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5d74fc5ace2fd460749c0314a8c8c5ee">
+        <source>Only blocks. An allowed bot gets no group of its own on purpose. A group would cut it off from the rules the shop sets for everyone.</source>
+        <target>Same zakazy. Wpuszczony bot celowo nie dostaje własnej grupy — grupa odcięłaby go od reguł, które sklep ustawia dla wszystkich.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ea54b6b43fc33424442bf216dcfbeb4f">
+        <source>Only entries you added yourself can be removed. The rest are allowed instead.</source>
+        <target>Skasować można wyłącznie wpisy dodane przez Ciebie. Pozostałe się wpuszcza, a nie usuwa.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="6311ae17c1ee52b36e68aaf4ad066387">
+        <source>Other</source>
+        <target>Inne</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="ac70412e939d72a9234cdebb1af5867b">
+        <source>Path</source>
+        <target>Ścieżka</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="818673c151a25b280547e763807e0a28">
+        <source>PrestaShop rewrites this file whenever the shop address changes, and the module block does not survive that. Come back here if bots start showing up again.</source>
+        <target>PrestaShop przepisuje ten plik przy każdej zmianie adresu sklepu, a blok modułu tego nie przeżywa. Wróć tutaj, jeśli roboty znów zaczną się pojawiać.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3fd0181ddc77f8ae442646f3894da68d">
+        <source>Quince Robots</source>
+        <target>Quince Robots</target>
+        <note>quince_robots.php</note>
+      </trans-unit>
+      <trans-unit id="d086983342e3c693a8c112ac7a1efc02">
+        <source>Quote the shop in answers and link back to it. Blocking them removes the shop from those answers.</source>
+        <target>Cytują sklep w odpowiedziach i odsyłają do niego. Zablokowanie usuwa sklep z tych odpowiedzi.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="cd726b963df4299638cb8d991772b31f">
+        <source>Recognise it by</source>
+        <target>Rozpoznawaj po</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2d71e664f3454b1bd7a1f3aac7db7f33">
+        <source>Refuse blocked bots</source>
+        <target>Odrzucaj zablokowane boty</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f48b206184b7442983452ea4c3e88a3a">
+        <source>Refused</source>
+        <target>Odrzucone</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="96df47430cc9d5605cdac0d8b0c65bdf">
+        <source>Refusing the request instead of asking. For bots that ignore the file.</source>
+        <target>Odrzucanie żądania zamiast proszenia. Dla botów, które ignorują plik.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1063e38cb53d94d386f21227fcd84717">
+        <source>Remove</source>
+        <target>Skasuj</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="875c50d5de3d7f59798b979eb46b53b9">
+        <source>Request rate</source>
+        <target>Częstość żądań</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5fc7a81a0b466ea6ffc7810b1465f71d">
+        <source>Requests per minute</source>
+        <target>Żądań na minutę</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="809b4f1b9e5d9e5c5774c525862a60d1">
+        <source>Robots &amp; AI</source>
+        <target>Roboty i AI</target>
+        <note>quince_robots.php</note>
+      </trans-unit>
+      <trans-unit id="71febf8b65f9145a1fbe08ab72364839">
+        <source>SEO settings</source>
+        <target>Ustawienia SEO</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5251e8053db54a3fdb5c38bb620dfefa">
+        <source>SEO tools</source>
+        <target>Narzędzia SEO</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="c9cc8cce247e49bae79f15173ce97354">
+        <source>Save</source>
+        <target>Zapisz</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="500388989fa4527692828bce66c4ce97">
+        <source>Save decisions</source>
+        <target>Zapisz decyzje</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c11f8c1ad1eb515cd4fbbd3a1ec200e3">
+        <source>Search engines</source>
+        <target>Wyszukiwarki</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="9a7e58ee13cb727cb7c4acc68f4cafe5">
+        <source>Settings saved.</source>
+        <target>Ustawienia zapisane.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="81759e2d6fc1fe9af6e147d4c5f9f4d6">
+        <source>Steered by the shop SEO settings, not here. Listed so you know they are accounted for.</source>
+        <target>Sterują nimi ustawienia SEO sklepu, nie ten ekran. Wypisane, żebyś wiedział, że są uwzględnione.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="a4bd22694f02609ae78505e60180e7d0">
+        <source>That category could not be saved.</source>
+        <target>Tej kategorii nie udało się zapisać.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="eb15f519bf9a22866a6ea1d1b2e6d7f5">
+        <source>That decision could not be saved.</source>
+        <target>Tej decyzji nie udało się zapisać.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="41bd91c95231d32b1a7d890d727b76f8">
+        <source>That entry could not be added. The token needs at least three characters.</source>
+        <target>Tego wpisu nie udało się dodać. Fragment nagłówka musi mieć co najmniej trzy znaki.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="de24fd21b3a4ed7589503384852cb335">
+        <source>The Quince index has not been published yet. The module works from its built-in list until then.</source>
+        <target>Spis Quince nie został jeszcze opublikowany. Do tego czasu moduł działa na liście wbudowanej.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="4d3235f50298837a2e55316cd1c12124">
+        <source>The counter carries no IP addresses, so no law sets this term. Older rows simply stop answering any question.</source>
+        <target>Licznik nie niesie adresów IP, więc żaden przepis nie wyznacza tego terminu. Starsze wiersze po prostu przestają na cokolwiek odpowiadać.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2326e77fbe0e39214b9fac54a45b91c3">
+        <source>The decision is saved, but robots.txt still holds the previous rules. Write the file to apply it.</source>
+        <target>Decyzja jest zapisana, ale robots.txt trzyma jeszcze poprzednie reguły. Zapisz plik, żeby zaczęła obowiązywać.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="1e02c4ddf4dd89fa5b48538eb348fafe">
+        <source>The file as served</source>
+        <target>Plik tak, jak wydaje go serwer</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="88dbbcacef116da4965ad1ee92b7d8bd">
+        <source>The file could not be read</source>
+        <target>Nie udało się odczytać pliku</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="dc9deb167ddc8ddec48889f2849480aa">
+        <source>The file does not carry the rules at all.</source>
+        <target>Plik w ogóle nie niesie reguł.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="aa5f6ef1cb74c3d5cedf6efea632bce2">
+        <source>The file holds an older version of the rules.</source>
+        <target>Plik trzyma starszą wersję reguł.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="44c570c7fddd12f7faa02639e34b9fc7">
+        <source>The file is fetched over HTTP, the way a bot would read it. Not from disk. A server rule or a redirect can stand between the two.</source>
+        <target>Plik pobieramy po HTTP, tak jak czytałby go robot — nie z dysku. Między jednym a drugim potrafi stanąć reguła serwera albo przekierowanie.</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a4a189b7261bda8bdc088424c2725920">
+        <source>The file lets it in</source>
+        <target>Plik go wpuszcza</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4f0e969bbd0ee75da3baf8fd6c80c5bc">
+        <source>The file matches the decisions you made.</source>
+        <target>Plik odpowiada podjętym decyzjom.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6c37a10934bd2de8ba395f99921b15a2">
+        <source>The list could not be fetched: %reason%</source>
+        <target>Nie udało się pobrać listy: %reason%</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="6c94f7fa72883946d6d32b60ff9d740a">
+        <source>The registry is empty. Reinstall the module to seed it.</source>
+        <target>Rejestr jest pusty. Zainstaluj moduł ponownie, żeby go zasiać.</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ce4c0b6b7eb794ac0fe759646a6b3b54">
+        <source>The rules live in robots.txt. PrestaShop owns that file, so the module writes only its own block into it.</source>
+        <target>Reguły mieszkają w robots.txt. Ten plik należy do PrestaShopa, więc moduł dopisuje do niego wyłącznie własny blok.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="26d91d0524fdc1dee950a6ade261b5df">
+        <source>There is no robots.txt in the shop root yet.</source>
+        <target>W katalogu głównym sklepu nie ma jeszcze pliku robots.txt.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0a58b6e2123fdaa68e30205a09d23de4">
+        <source>These settings apply to the whole installation. robots.txt sits in the shop root and there is one of it, so a per-shop choice here would promise something the file cannot deliver.</source>
+        <target>Te ustawienia dotyczą całej instalacji. robots.txt leży w katalogu głównym i jest jeden, więc wybór osobno dla każdego sklepu obiecywałby coś, czego plik nie odda.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="83bfc00fb5f947eb8026b04c6530de15">
+        <source>This fragment becomes the entry's fingerprint. From the moment you save it, any request whose header carries it counts as this bot. Leave the name without the version number, or the entry stops working when the vendor changes it.</source>
+        <target>Ten fragment stanie się znakiem rozpoznawczym wpisu. Od zapisania każde żądanie, którego nagłówek go zawiera, będzie liczone jako ten bot. Zostaw sam człon nazwy, bez numeru wersji — inaczej wpis przestanie działać, gdy producent ją zmieni.</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5f700dd494bd7763c7e6391327ff137a">
+        <source>This one counts everybody, customers included. The traffic it guards against does not identify itself. A threshold set too low turns real customers away, and you hear about it from them, not from here. Leave it off unless you have a reason.</source>
+        <target>Ten próg liczy wszystkich, także klientów — ruch, przed którym chroni, się nie przedstawia. Za nisko ustawiony odsyła prawdziwych klientów, a dowiadujesz się o tym od nich, nie stąd. Zostaw wyłączony, jeśli nie masz powodu.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2f3651c032fa2771c5fd433f916ed7d8">
+        <source>Traffic that announces itself as a machine but matches no entry. Add the ones you recognise.</source>
+        <target>Ruch, który przedstawia się jako automat, ale nie pasuje do żadnego wpisu. Dodaj te, które rozpoznajesz.</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c3395bcfc661c37fcebdb286f6e0326e">
+        <source>Uninstall the module? The rules it wrote into robots.txt disappear with it, and every bot is allowed again.</source>
+        <target>Odinstalować moduł? Reguły, które wpisał do robots.txt, znikną razem z nim, a każdy bot znów będzie wpuszczany.</target>
+        <note>quince_robots.php</note>
+      </trans-unit>
+      <trans-unit id="b4f9c9c0c8ac8a99e931ef9eef8872f8">
+        <source>Until the file answers, no rule in it reaches any bot. Whatever the decisions screen says.</source>
+        <target>Dopóki plik nie odpowiada, żadna reguła z niego nie dociera do robotów — cokolwiek mówi ekran decyzji.</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="21d4be09479a2aac7d953f01386f49bb">
+        <source>Visit counter</source>
+        <target>Licznik wizyt</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d7e637a6e9ff116de2fa89551240a94d">
+        <source>Visits</source>
+        <target>Wizyty</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a7768ba460bf1c0b9fc5b5f6917b84a5">
+        <source>What each bot sees</source>
+        <target>Co widzi każdy bot</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="352f77ada89217d584f62d93bd062f49">
+        <source>What the module writes</source>
+        <target>Co wpisuje moduł</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0c54f80910fb344fb8ec43be4ce6bcea">
+        <source>When this is off, the module stops adding its block the next time the file is generated, and every bot is allowed again. The decisions you made stay saved.</source>
+        <target>Gdy to jest wyłączone, moduł przestaje dopisywać swój blok przy najbliższym generowaniu pliku, a każdy bot znów jest wpuszczany. Podjęte decyzje zostają zapisane.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="9870938b285b8adde5622ad7c38b6126">
+        <source>Where the entries come from. We do not maintain the list ourselves.</source>
+        <target>Skąd biorą się wpisy. Listy nie utrzymujemy sami.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b9fb1a7e01f4952e35d2a8cb5fa5db35">
+        <source>Whether the file on disk matches the decisions you made.</source>
+        <target>Czy plik na dysku odpowiada decyzjom, które podjąłeś.</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f26fd06e97d23284f70f61f21401829d">
+        <source>Without this the counter resets every minute and an address refused at second 59 is back at second 61.</source>
+        <target>Bez tego licznik zeruje się co minutę, a adres odrzucony w 59. sekundzie wraca do gry w 61.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a1915263415d561ab5f8c7a7fcaa60af">
+        <source>Writable</source>
+        <target>Zapisywalny</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="18dc5dbd3ef7dc94ced40899ebaefd89">
+        <source>Write it now</source>
+        <target>Zapisz teraz</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4abd5c867a651bc3538e042be65436d8">
+        <source>Write robots.txt</source>
+        <target>Zapisz robots.txt</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8d9f5fd9ba8cd17c186bd7f0e4e09b8b">
+        <source>Write the block</source>
+        <target>Dopisuj blok</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="eba33c18efdd132ddd4895441412075b">
+        <source>You decided</source>
+        <target>Postanowiłeś</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b2aa57670705c55d4d77f6b4cfaea252">
+        <source>added by you</source>
+        <target>dodany przez Ciebie</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="22ee71e9dcc9ca12fc313c6e1ce3f806">
+        <source>allowed</source>
+        <target>wpuszczany</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b49a09fc4b63670ee9a64c46ce2a9f25">
+        <source>back to %what%</source>
+        <target>wróć do: %what%</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="61326117ed4a9ddf3f754e71e119e5b3">
+        <source>blocked</source>
+        <target>zablokowany</target>
+        <note>views/templates/admin/traffic.html.twig</note>
+      </trans-unit>
+      <trans-unit id="057519d7450a841a0d11c5341dfab78e">
+        <source>ignores robots.txt</source>
+        <target>ignoruje robots.txt</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8759c654b1660cf615ff74c3f15f5ded">
+        <source>managed by SEO settings</source>
+        <target>sterowane ustawieniami SEO</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7fa3b767c460b54a2be4d49030b349c7">
+        <source>no</source>
+        <target>nie</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e921ba084091eff2e94b29841ac9bd35">
+        <source>no group. Nothing forbidden</source>
+        <target>brak grupy — nic nie zabronione</target>
+        <note>views/templates/admin/test.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c2a43ad51c7f9eba3682d55fc0bf9a36">
+        <source>off the source list since %when%</source>
+        <target>poza listą źródłową od %when%</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="aa2646a667ee1cd83235786dccef4a26">
+        <source>robots.txt</source>
+        <target>robots.txt</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="fd1125a64b04ac9ae095c8a01d77127e">
+        <source>robots.txt could not be written. Check the file permissions in the shop root.</source>
+        <target>Nie udało się zapisać robots.txt. Sprawdź uprawnienia do pliku w katalogu głównym sklepu.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="837d568b560a83ca5c4fd01afeda53bb">
+        <source>robots.txt does not carry the rules yet.</source>
+        <target>robots.txt nie niesie jeszcze reguł.</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3496d1f8e2fcbeb1cc4dcbf72f96d8d0">
+        <source>robots.txt still holds the previous rules.</source>
+        <target>robots.txt trzyma jeszcze poprzednie reguły.</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b57e6ad658b9dd4002a885e29d3588d6">
+        <source>robots.txt was written.</source>
+        <target>robots.txt został zapisany.</target>
+        <note>src/Controller/Admin/RobotsController.php</note>
+      </trans-unit>
+      <trans-unit id="5801a53f48789a4010a0208fafce0c9f">
+        <source>vendor docs</source>
+        <target>dokumentacja producenta</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a6105c0a611b41b08f1209506350279e">
+        <source>yes</source>
+        <target>tak</target>
+        <note>views/templates/admin/file.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7412cdb2fc7a2cf96dcd58e56648d738">
+        <source>your choice</source>
+        <target>twój wybór</target>
+        <note>views/templates/admin/robots.html.twig</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

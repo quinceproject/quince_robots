@@ -1,0 +1,226 @@
+{# Ustawienia modułu.
+
+   Trzy karty, bo to trzy różne rozmowy: co robimy z plikiem, jak daleko idziemy
+   w egzekwowaniu, i co zostaje po ruchu. Każda z nich ma inną cenę pomyłki
+   i przy każdej piszemy, jaką.
+
+   Wyłącznie klasy z paczki silnika. #}
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincerobots.Admin' %}
+
+{% block quince_actions %}
+    <button type="submit" form="quince-robots-settings" class="qc-btn qc-btn-primary">
+        {{ 'Save'|trans }}
+    </button>
+{% endblock %}
+
+{% block quince_intro %}
+    <div class="qc-alert qc-alert-info">
+        {{ icons.icon('info', 18, 'qc-alert-icon') }}
+        <div>
+            {{ 'These settings apply to the whole installation. robots.txt sits in the shop root and there is one of it, so a per-shop choice here would promise something the file cannot deliver.'|trans }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block quince_body %}
+<form id="quince-robots-settings" method="post" action="{{ path('quince_robots_settings_save') }}" class="qc-stack">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_robots_settings_save') }}">
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'robots.txt'|trans }}</div>
+                <div class="qc-card-desc">{{ 'Asking the bots politely. Most of them listen.'|trans }}</div>
+            </div>
+
+            {# Ukryte pole przed właściwym: przeglądarka nie wysyła niezaznaczonego
+               pola wyboru w ogóle, więc bez niego wyłączenia nie dałoby się zapisać. #}
+            <label class="qc-toggle">
+                <input type="hidden" name="robots_on" value="0">
+                <input type="checkbox" name="robots_on" value="1"{{ options.robots_on ? ' checked' : '' }}>
+                <span class="qc-toggle-track"></span>
+                <span class="qc-toggle-text">{{ 'Write the block'|trans }}</span>
+            </label>
+        </div>
+
+        <div class="qc-card-body qc-stack">
+            <div class="qc-field-note">
+                {{ 'When this is off, the module stops adding its block the next time the file is generated, and every bot is allowed again. The decisions you made stay saved.'|trans }}
+            </div>
+        </div>
+    </div>
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Enforcement'|trans }}</div>
+                <div class="qc-card-desc">{{ 'Refusing the request instead of asking. For bots that ignore the file.'|trans }}</div>
+            </div>
+
+            <label class="qc-toggle">
+                <input type="hidden" name="enforce_on" value="0">
+                <input type="checkbox" name="enforce_on" value="1"{{ options.enforce_on ? ' checked' : '' }}>
+                <span class="qc-toggle-track"></span>
+                <span class="qc-toggle-text">{{ 'Refuse blocked bots'|trans }}</span>
+            </label>
+        </div>
+
+        <div class="qc-card-body qc-stack">
+            <div class="qc-field-note">
+                {{ 'A blocked bot that respects robots.txt is not refused. The file already did the work, and refusing it would only add a way to get things wrong. Refusal applies to bots known to ignore the file, and only once reverse DNS confirms the bot is who it claims to be.'|trans }}
+            </div>
+
+            {% if options.enforce_on %}
+                {% if enforceable > 0 %}
+                    <div class="qc-alert qc-alert-warning">
+                        {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+                        <div>{{ '%count% blocked bots are refused at the door.'|trans({'%count%': enforceable}) }}</div>
+                    </div>
+                {% else %}
+                    <div class="qc-alert qc-alert-info">
+                        {{ icons.icon('info', 18, 'qc-alert-icon') }}
+                        <div>{{ 'Nothing is being refused right now: every bot you blocked respects robots.txt, so the file is enough.'|trans }}</div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Request rate'|trans }}</div>
+                <div class="qc-card-desc">{{ 'A ceiling on requests from one address, for traffic that does not introduce itself.'|trans }}</div>
+            </div>
+
+            <label class="qc-toggle">
+                <input type="hidden" name="rate_on" value="0">
+                <input type="checkbox" name="rate_on" value="1"{{ options.rate_on ? ' checked' : '' }}>
+                <span class="qc-toggle-track"></span>
+                <span class="qc-toggle-text">{{ 'Limit the rate'|trans }}</span>
+            </label>
+        </div>
+
+        {# `qc-stack` daje odstęp między kolejnymi blokami karty. Bez niego ostrzeżenie
+           przykleja się do etykiet pól pod nim. #}
+        <div class="qc-card-body qc-stack">
+            <div class="qc-alert qc-alert-warning">
+                {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+                <div>
+                    {{ 'This one counts everybody, customers included. The traffic it guards against does not identify itself. A threshold set too low turns real customers away, and you hear about it from them, not from here. Leave it off unless you have a reason.'|trans }}
+                </div>
+            </div>
+
+            <div class="qc-form-grid qc-form-grid-2">
+                <div class="qc-field">
+                    <label class="qc-label" for="q-rate-limit">{{ 'Requests per minute'|trans }}</label>
+                    <input class="qc-field-base" type="number" id="q-rate-limit" name="rate_limit"
+                           min="10" max="100000" value="{{ options.rate_limit }}">
+                    <div class="qc-field-note">{{ 'A person browsing quickly does 20 to 40. A shared office address does more.'|trans }}</div>
+                </div>
+
+                <div class="qc-field">
+                    <label class="qc-label" for="q-rate-cooldown">{{ 'Kept out for (minutes)'|trans }}</label>
+                    <input class="qc-field-base" type="number" id="q-rate-cooldown" name="rate_cooldown"
+                           min="1" max="60" value="{{ options.rate_cooldown }}">
+                    <div class="qc-field-note">{{ 'Without this the counter resets every minute and an address refused at second 59 is back at second 61.'|trans }}</div>
+                </div>
+            </div>
+
+            {% if tripped > 0 %}
+                <div class="qc-field-note">
+                    {{ '%count% addresses are being kept out right now.'|trans({'%count%': tripped}) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Bot list'|trans }}</div>
+                <div class="qc-card-desc">{{ 'Where the entries come from. We do not maintain the list ourselves.'|trans }}</div>
+            </div>
+
+            <div class="qc-card-tools">
+                <button type="submit" form="refresh-index" class="qc-btn qc-btn-sm qc-btn-outline">
+                    {{ 'Check for new bots'|trans }}
+                </button>
+            </div>
+        </div>
+
+        <div class="qc-card-body qc-stack">
+            <div class="qc-field-note">
+                {{ '%count% entries in the registry.'|trans({'%count%': listCount}) }}
+                {% if listChecked %}
+                    {{ 'Last checked %when%.'|trans({'%when%': listChecked}) }}
+                {% else %}
+                    {{ 'Never checked. The module works from its built-in list until then.'|trans }}
+                {% endif %}
+            </div>
+
+            <div class="qc-field-note">
+                {{ 'Fetching only ever refreshes descriptions and our recommendation. Your decisions, and the entries you added yourself, are never touched.'|trans }}
+            </div>
+        </div>
+    </div>
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Visit counter'|trans }}</div>
+                <div class="qc-card-desc">{{ 'One row per bot per day, one added per visit. No addresses are stored.'|trans }}</div>
+            </div>
+
+            <label class="qc-toggle">
+                <input type="hidden" name="log_on" value="0">
+                <input type="checkbox" name="log_on" value="1"{{ options.log_on ? ' checked' : '' }}>
+                <span class="qc-toggle-track"></span>
+                <span class="qc-toggle-text">{{ 'Count visits'|trans }}</span>
+            </label>
+        </div>
+
+        <div class="qc-card-body qc-stack">
+            <div class="qc-form-grid qc-form-grid-2">
+                <div class="qc-field">
+                    <label class="qc-label" for="q-retention">{{ 'Keep for (months)'|trans }}</label>
+                    <input class="qc-field-base" type="number" id="q-retention" name="retention"
+                           min="1" max="60" value="{{ options.retention }}">
+                    <div class="qc-field-note">
+                        {{ 'The counter carries no IP addresses, so no law sets this term. Older rows simply stop answering any question.'|trans }}
+                    </div>
+                </div>
+
+                <div class="qc-field">
+                    <label class="qc-label">{{ 'Housekeeping'|trans }}</label>
+                    <div class="qc-field-note">
+                        {% if lastPurge %}
+                            {{ 'Last run: %when%.'|trans({'%when%': lastPurge}) }}
+                        {% else %}
+                            {{ 'Has not run yet. It runs once a day, when someone opens the back office.'|trans }}
+                        {% endif %}
+                        {% if pending > 0 %}
+                            {{ '%count% rows are past the term.'|trans({'%count%': pending}) }}
+                        {% endif %}
+                    </div>
+                    <button type="submit" form="purge-now" class="qc-btn qc-btn-sm qc-btn-outline">
+                        {{ 'Clean up now'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+{# Poza formularzem ustawień, bo formularz w formularzu nie jest poprawnym HTML-em. #}
+<form id="purge-now" method="post" action="{{ path('quince_robots_purge') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_robots_purge') }}">
+</form>
+<form id="refresh-index" method="post" action="{{ path('quince_robots_index_refresh') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_robots_index_refresh') }}">
+</form>
+{% endblock %}

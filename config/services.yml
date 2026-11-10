@@ -1,0 +1,22 @@
+services:
+  _defaults:
+    public: true
+
+    # Te trzy linie są obowiązkowe w każdym naszym module.
+    #
+    # PrestaShop wyszukuje kontrolery modułów wyrażeniem regularnym po treści pliku
+    # i dopiero wtedy dokłada im tagi, dzięki którym Symfony podaje kontrolerowi jego
+    # lokalizator usług. Nasz kontroler dziedziczy po `PrestaShopAdminController`,
+    # więc ten wzorzec do niego nie pasuje — deklarujemy to sami, zamiast liczyć
+    # na wykrycie.
+    autoconfigure: true
+    autowire: true
+    tags: ['controller.service_arguments']
+
+  Quince\Robots\Registry\BotRegistry:
+    class: Quince\Robots\Registry\BotRegistry
+
+  Quince\Robots\Controller\Admin\RobotsController:
+    class: Quince\Robots\Controller\Admin\RobotsController
+    arguments:
+      - '@Quince\Robots\Registry\BotRegistry'

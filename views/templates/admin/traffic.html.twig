@@ -1,0 +1,180 @@
+{# Ruch automatów: kto przychodzi i jak często.
+
+   Dwie listy, i ta druga jest ważniejsza. Pierwsza mówi, co robią roboty,
+   o których wiemy — i czy decyzja podjęta na sąsiednim ekranie ma jakikolwiek
+   skutek. Druga pokazuje automaty, których rejestr nie zna, i pozwala je dopisać
+   od razu: nowy bot pojawia się w sieci wcześniej, niż trafia na jakąkolwiek listę.
+
+   Wyłącznie klasy z paczki silnika. #}
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincerobots.Admin' %}
+
+{% block quince_intro %}
+    <div class="qc-alert qc-alert-info">
+        {{ icons.icon('info', 18, 'qc-alert-icon') }}
+        <div>
+            {{ 'A visit adds one to a counter. The module keeps no record of individual requests and stores no IP addresses. Last 30 days.'|trans }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block quince_body %}
+<div class="qc-stack">
+
+    {% if not counting %}
+        <div class="qc-alert qc-alert-warning">
+            {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+            <div>{{ 'Counting is switched off in the settings, so nothing new is being added here.'|trans }}</div>
+        </div>
+    {% endif %}
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Bots we know'|trans }}</div>
+                <div class="qc-card-desc">{{ 'Entries from the registry that actually came by. "Days seen" is how many separate days it showed up on — a bot that took 500 pages in one afternoon reads differently from one that looks in every day.'|trans }}</div>
+            </div>
+        </div>
+
+        <div class="qc-card-body qc-stack">
+            {% if known is empty %}
+                <div class="qc-empty">
+                    <div class="qc-empty-text">{{ 'No visits recorded yet. Bots find a shop within days, not hours.'|trans }}</div>
+                </div>
+            {% else %}
+                <div class="qc-table-wrap">
+                    <table class="qc-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'Bot'|trans }}</th>
+                                <th>{{ 'Decision'|trans }}</th>
+                                <th>{{ 'Visits'|trans }}</th>
+                                {# Na ilu różnych dniach bot się pojawił. Odróżnia „przyszedł raz
+                                   i wziął pięćset stron" od „zagląda codziennie po trochu". #}
+                                <th>{{ 'Days seen'|trans }}</th>
+                                <th>{{ 'Refused'|trans }}</th>
+                                <th>{{ 'Last seen'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in known %}
+                                {% set bot = bots[row.bot_key]|default(null) %}
+                                <tr>
+                                    <td>
+                                        {{ bot ? bot.label : row.bot_key }}
+                                        {% if bot and bot.vendor %}
+                                            <div class="qc-rep-sub">{{ bot.vendor }}</div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if bot and bot.effective_policy == 'block' %}
+                                            <span class="qc-badge qc-badge-warning">{{ 'blocked'|trans }}</span>
+                                        {% else %}
+                                            <span class="qc-badge qc-badge-success">{{ 'allowed'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ row.hits }}</td>
+                                    <td>{{ row.days }}</td>
+                                    <td>
+                                        {# Zablokowany bot, który nadal przychodzi, a nic nie jest odrzucane,
+                                           to normalny stan: prosimy go w pliku i on prośbę honoruje. #}
+                                        {{ row.blocked > 0 ? row.blocked : '—' }}
+                                    </td>
+                                    <td>{{ row.last }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Automata we do not know'|trans }}</div>
+                <div class="qc-card-desc">{{ 'Traffic that announces itself as a machine but matches no entry. Add the ones you recognise.'|trans }}</div>
+            </div>
+        </div>
+
+        <div class="qc-card-body qc-stack">
+            {% if unknown is empty %}
+                <div class="qc-empty">
+                    <div class="qc-empty-text">{{ 'Nothing here. Every automaton that came by is in the registry.'|trans }}</div>
+                </div>
+            {% else %}
+                <div class="qc-repeater">
+                    {% for row in unknown %}
+                        <div class="qc-rep-row">
+                            {# Głowa jedną linią, tak jak repeatery w silniku. Nagłówek bywa
+                               długi i zostaje tu przycięty — w całości widać go niżej,
+                               w polu, w którym i tak trzeba go przejrzeć przed dodaniem. #}
+                            <div class="qc-rep-row-head">
+                                <span class="qc-rep-name">
+                                    {{ row.user_agent }}
+                                    <span class="qc-rep-sub">
+                                        {{ '%hits% visits over %days% days, last %when%'|trans({
+                                            '%hits%': row.hits, '%days%': row.days, '%when%': row.last
+                                        }) }}
+                                    </span>
+                                </span>
+                            </div>
+
+                            <div class="qc-rep-body">
+                                {# Formularz przy wierszu, nie w okienku: decyzja zapada patrząc
+                                   na nagłówek, a token trzeba móc poprawić przed zapisaniem. #}
+                                <form method="post" action="{{ path('quince_robots_bot_add') }}" class="qc-stack">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_robots_bot_add') }}">
+                                    <div class="qc-form-grid qc-form-grid-3">
+                                        <div class="qc-field">
+                                            <label class="qc-label" for="q-token-{{ loop.index }}">{{ 'Recognise it by'|trans }}</label>
+                                            <input class="qc-field-base" type="text" id="q-token-{{ loop.index }}"
+                                                   name="token" value="{{ row.guess }}" required minlength="3">
+                                            <div class="qc-field-note">
+                                                {{ 'This fragment becomes the entry\'s fingerprint. From the moment you save it, any request whose header carries it counts as this bot. Leave the name without the version number, or the entry stops working when the vendor changes it.'|trans }}
+                                            </div>
+                                        </div>
+
+                                        <div class="qc-field">
+                                            <label class="qc-label" for="q-label-{{ loop.index }}">{{ 'Name it'|trans }}</label>
+                                            <input class="qc-field-base" type="text" id="q-label-{{ loop.index }}"
+                                                   name="label" value="{{ row.guess }}">
+                                        </div>
+
+                                        <div class="qc-field">
+                                            <label class="qc-label" for="q-cat-{{ loop.index }}">{{ 'Category'|trans }}</label>
+                                            <div class="qc-select-wrap">
+                                                <select id="q-cat-{{ loop.index }}" name="category" class="qc-field-base qc-select qc-focusable">
+                                                    {% for key, label in categories|filter((l, k) => k != 'search') %}
+                                                        <option value="{{ key }}"{{ key == 'other' ? ' selected' : '' }}>{{ label.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                {# Bez tej strzałki pole wygląda na zepsute: `qc-select` zdejmuje
+                                                   natywną (`appearance:none`), a silnik rysuje własną. #}
+                                                {{ icons.icon('chevronDown', 14, 'qc-select-chevron') }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="qc-hstack">
+                                        <button type="submit" name="policy" value="block" class="qc-btn qc-btn-sm qc-btn-primary">
+                                            {{ 'Add and block'|trans }}
+                                        </button>
+                                        <button type="submit" name="policy" value="allow" class="qc-btn qc-btn-sm qc-btn-outline">
+                                            {{ 'Add and allow'|trans }}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

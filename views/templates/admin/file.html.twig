@@ -1,0 +1,121 @@
+{# Stan pliku robots.txt i podgląd tego, co moduł do niego wpisuje.
+
+   Osobny widok od listy robotów, bo to jest inne pytanie. Tam zapada decyzja,
+   tutaj sprawdza się, czy zeszła na dysk. Dwie karty, bo to dwie różne rzeczy:
+   co jest w pliku dziś, i co moduł chce w nim mieć.
+
+   Wyłącznie klasy z paczki silnika. #}
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincerobots.Admin' %}
+
+{% block quince_intro %}
+    <div class="qc-alert qc-alert-info">
+        {{ icons.icon('info', 18, 'qc-alert-icon') }}
+        <div>
+            {{ 'The rules live in robots.txt. PrestaShop owns that file, so the module writes only its own block into it.'|trans }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block quince_body %}
+<div class="qc-stack">
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'File state'|trans }}</div>
+                <div class="qc-card-desc">{{ 'Whether the file on disk matches the decisions you made.'|trans }}</div>
+            </div>
+
+            <div class="qc-card-tools">
+                <button type="submit" form="write-file" class="qc-btn qc-btn-sm qc-btn-primary">
+                    {{ icons.icon('check', 13) }} {{ 'Write robots.txt'|trans }}
+                </button>
+            </div>
+        </div>
+
+        <div class="qc-card-body qc-stack">
+            {% if not file.exists %}
+                <div class="qc-alert qc-alert-warning">
+                    {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+                    <div>{{ 'There is no robots.txt in the shop root yet.'|trans }}</div>
+                </div>
+            {% elseif not file.current %}
+                <div class="qc-alert qc-alert-warning">
+                    {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+                    <div>
+                        {% if file.has_block %}
+                            {{ 'The file holds an older version of the rules.'|trans }}
+                        {% else %}
+                            {{ 'The file does not carry the rules at all.'|trans }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="qc-alert qc-alert-success">
+                    {{ icons.icon('check', 18, 'qc-alert-icon') }}
+                    <div>{{ 'The file matches the decisions you made.'|trans }}</div>
+                </div>
+            {% endif %}
+
+            <div class="qc-form-grid qc-form-grid-2">
+                <div class="qc-field">
+                    <div class="qc-label">{{ 'Path'|trans }}</div>
+                    <span class="qc-var" style="word-break:break-all">{{ file.path }}</span>
+                </div>
+                <div class="qc-field">
+                    <div class="qc-label">{{ 'Writable'|trans }}</div>
+                    <div class="qc-rep-sub">{{ file.writable ? 'yes'|trans : 'no'|trans }}</div>
+                </div>
+                <div class="qc-field">
+                    <div class="qc-label">{{ 'Last written'|trans }}</div>
+                    <div class="qc-rep-sub">{{ file.changed ?: '—' }}</div>
+                </div>
+                <div class="qc-field">
+                    <div class="qc-label">{{ 'Blocked bots'|trans }}</div>
+                    <div class="qc-rep-sub">{{ blockedCount }}</div>
+                </div>
+            </div>
+        </div>
+
+        {# Rdzeń przepisuje ten plik także przy zmianie adresu sklepu, i robi to
+           z pominięciem naszego hooka. Wtedy blok znika bez żadnego komunikatu —
+           dlatego ten ekran w ogóle istnieje. #}
+        <div class="qc-card-foot" style="justify-content:flex-start">
+            <span class="qc-rep-sub">
+                {{ 'PrestaShop rewrites this file whenever the shop address changes, and the module block does not survive that. Come back here if bots start showing up again.'|trans }}
+            </span>
+        </div>
+    </div>
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'What the module writes'|trans }}</div>
+                <div class="qc-card-desc">
+                    {{ 'Only blocks. An allowed bot gets no group of its own on purpose. A group would cut it off from the rules the shop sets for everyone.'|trans }}
+                </div>
+            </div>
+        </div>
+
+        <div class="qc-card-body qc-stack">
+            {% if preview|trim %}
+                <div class="qc-preview-box">
+                    <span class="qc-var" style="white-space:pre-wrap;word-break:break-all">{{ preview|trim }}</span>
+                </div>
+            {% else %}
+                <div class="qc-empty">
+                    <div class="qc-empty-text">{{ 'Nothing is blocked, so the module writes no block at all.'|trans }}</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+<form id="write-file" method="post" action="{{ path('quince_robots_write') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_robots_write') }}">
+</form>
+{% endblock %}

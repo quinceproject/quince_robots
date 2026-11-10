@@ -1,0 +1,230 @@
+{# Ekran robotów: kto puka do sklepu i kogo wpuszczamy.
+
+   Każda kategoria to osobna karta, bo decyzja zapada wobec grupy — „nie chcę,
+   żeby ktokolwiek karmił moimi opisami swojego modelu". Pojedynczy robot jest
+   wyjątkiem od tej decyzji, więc siedzi w karcie, a nie obok niej.
+
+   **Zaznaczanie, nie zapisywanie.** Cały ekran jest jednym formularzem, a zapis
+   siedzi w dolnym pasku silnika. Wcześniej każde kliknięcie było osobnym zapisem
+   i przeładowaniem strony — przy stu kilkudziesięciu wpisach nie do wytrzymania.
+
+   **Wszystko o bocie jest widoczne od razu**, bez rozwijania: opis, nazwa
+   w nagłówku, kategoria i przełącznik. Kto przegląda listę, żeby zdecydować,
+   musi widzieć, co to za jeden — a kto przestawia kategorie w kilkunastu wpisach,
+   nie może do każdego wchodzić osobno.
+
+   Dwa `style` przy elementach są tu konieczne i nie da się ich zastąpić klasą
+   z paczki: `qc-rep-name` jest z założenia jednoliniowy (`white-space:nowrap`
+   plus wielokropek), a nasz wiersz niesie opis. To luka w paczce, nie wybór. #}
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincerobots.Admin' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('../modules/quince_engine/views/js/vendor/alpine.min.js') ~ qcVer }}" defer></script>
+{% endblock %}
+
+{% block quince_actions %}
+    <button type="submit" form="quince-robots-decisions" class="qc-btn qc-btn-primary">
+        {{ icons.icon('check', 14) }} {{ 'Save decisions'|trans }}
+    </button>
+{% endblock %}
+
+{% block quince_intro %}
+    <div class="qc-alert qc-alert-info">
+        {{ icons.icon('info', 18, 'qc-alert-icon') }}
+        <div>
+            {{ 'Crawlers and AI agents read this shop. Decide which of them may, and the module writes it into robots.txt.'|trans }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block quince_body %}
+<form id="quince-robots-decisions" method="post" action="{{ path('quince_robots_save') }}" class="qc-stack">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_robots_save') }}">
+
+    {# Wypełniane przez listę kategorii tuż przed wysłaniem. Puste znaczy, że
+       formularz przyszedł zwykłym „Zapisz" i nikogo nie przepinamy. #}
+    <input type="hidden" name="recategorise" value="">
+
+    {# Reguła w rejestrze nic nie znaczy, dopóki nie jest w pliku. Bez tego paska
+       sprzedawca klika decyzje i wierzy, że działają. #}
+    {% if not file.current %}
+        <div class="qc-alert qc-alert-warning">
+            {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+            <div>
+                {% if not file.has_block %}
+                    {{ 'robots.txt does not carry the rules yet.'|trans }}
+                {% else %}
+                    {{ 'robots.txt still holds the previous rules.'|trans }}
+                {% endif %}
+                <button type="submit" form="write-file" class="qc-btn qc-btn-sm qc-btn-text">
+                    {{ 'Write it now'|trans }}
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+    {% for category, bots in categories %}
+        {% set opis = labels[category]|default({'name': category, 'hint': ''}) %}
+
+        {# Stan całej karty w jednym miejscu, żeby „wpuść wszystkie" miało co
+           przestawić. Bez tego każdy wiersz byłby osobnym stanem i przycisk
+           hurtowy musiałby grzebać w cudzym. #}
+        {% set stan = {} %}
+        {% for bot in bots %}
+            {% set stan = stan|merge({(bot.key): bot.effective_policy}) %}
+        {% endfor %}
+
+        <div class="qc-card" x-data="{ p: {{ stan|json_encode }} }">
+            <div class="qc-card-head">
+                <div>
+                    <div class="qc-card-title">{{ opis.name }}</div>
+                    <div class="qc-card-desc">{{ opis.hint }}</div>
+                </div>
+
+                {# Wyszukiwarek nie da się stąd zablokować — steruje nimi panel SEO
+                   sklepu, a dwa miejsca sterujące tym samym kończą się tym, że
+                   jedno nadpisuje drugie. #}
+                {% if category != 'search' %}
+                    <div class="qc-card-tools">
+                        <button type="button" class="qc-btn qc-btn-sm qc-btn-outline"
+                                @click="Object.keys(p).forEach(k => p[k] = 'allow')">
+                            {{ 'Allow all'|trans }}
+                        </button>
+                        <button type="button" class="qc-btn qc-btn-sm qc-btn-outline"
+                                @click="Object.keys(p).forEach(k => p[k] = 'block')">
+                            {{ 'Block all'|trans }}
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="qc-card-body">
+                <div class="qc-repeater">
+                    {% for bot in bots %}
+                        <div class="qc-rep-row">
+                            <div class="qc-rep-row-head" style="align-items:flex-start">
+
+                                <div class="qc-rep-name" style="white-space:normal">
+                                    {{ bot.label }}
+                                    {% if bot.vendor %}<span class="qc-rep-sub">{{ bot.vendor }}</span>{% endif %}
+
+                                    {% if bot.source == 'custom' %}
+                                        <span class="qc-badge">{{ 'added by you'|trans }}</span>
+                                    {% endif %}
+
+                                    {# Wpis, którego nie ma już na liście źródłowej. Zostaje razem
+                                       z decyzją — zniknięcie stamtąd bywa cudzym porządkowaniem,
+                                       a nie znakiem, że bot przestał chodzić. #}
+                                    {% if bot.off_list_since %}
+                                        <span class="qc-badge">{{ 'off the source list since %when%'|trans({'%when%': bot.off_list_since}) }}</span>
+                                    {% endif %}
+
+                                    {% if bot.own_choice %}
+                                        <span class="qc-badge qc-badge-accent">{{ 'your choice'|trans }}</span>
+                                    {% endif %}
+
+                                    {# Bot, który nie honoruje robots.txt, to jedyny przypadek,
+                                       w którym sam wpis w pliku nie wystarcza. #}
+                                    {% if bot.respects == 'no' %}
+                                        <span class="qc-badge qc-badge-warning">{{ 'ignores robots.txt'|trans }}</span>
+                                    {% endif %}
+
+                                    {% if bot.description %}
+                                        <div class="qc-rep-sub">{{ bot.description }}</div>
+                                    {% endif %}
+
+                                    <span class="qc-var">{{ bot.token }}</span>
+
+                                    {% if bot.docs_url %}
+                                        <a class="qc-rep-sub" href="{{ bot.docs_url }}" target="_blank" rel="noopener">
+                                            {{ 'vendor docs'|trans }}
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+                                <div class="qc-rep-actions">
+                                    {% if category == 'search' %}
+                                        <span class="qc-rep-sub">{{ 'managed by SEO settings'|trans }}</span>
+                                    {% else %}
+                                        {# Przepięcie do innej kategorii. Nasze zaszeregowanie bywa
+                                           nietrafione, bo lista źródłowa opisuje bota jednym zdaniem,
+                                           a niejeden robi więcej niż jedną rzecz. Stoi w wierszu,
+                                           bo przestawianie kilkunastu wpisów po kolei musi się dać
+                                           zrobić bez wchodzenia w każdy z osobna.
+
+                                           Bez `search` na liście: przeniesienie tam odebrałoby wpisowi
+                                           przełącznik i nie dałoby się tego cofnąć. #}
+                                        <div class="qc-select-wrap">
+                                            <select name="category" class="qc-field-base qc-select qc-focusable"
+                                                    aria-label="{{ 'Category'|trans }}"
+                                                    onchange="this.form.recategorise.value = '{{ bot.key }}'; this.form.submit();">
+                                                {% for key, etykieta in labels|filter((l, k) => k != 'search') %}
+                                                    <option value="{{ key }}"{{ key == bot.category ? ' selected' : '' }}>{{ etykieta.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            {{ icons.icon('chevronDown', 14, 'qc-select-chevron') }}
+                                        </div>
+
+                                        {# Przełącznik z radiem, nie z przyciskiem: przycisk wysyłałby
+                                           formularz przy każdym kliknięciu, a o to właśnie chodziło,
+                                           żeby przestał. #}
+                                        <div class="qc-radio-group">
+                                            <label class="qc-radio-opt" :class="p['{{ bot.key }}'] === 'allow' && 'qc-selected'">
+                                                <input type="radio" name="policy[{{ bot.key }}]" value="allow"
+                                                       x-model="p['{{ bot.key }}']"
+                                                       {{ bot.effective_policy == 'allow' ? 'checked' : '' }}>
+                                                {{ 'Allow'|trans }}
+                                            </label>
+                                            <label class="qc-radio-opt" :class="p['{{ bot.key }}'] === 'block' && 'qc-selected'">
+                                                <input type="radio" name="policy[{{ bot.key }}]" value="block"
+                                                       x-model="p['{{ bot.key }}']"
+                                                       {{ bot.effective_policy == 'block' ? 'checked' : '' }}>
+                                                {{ 'Block'|trans }}
+                                            </label>
+                                        </div>
+
+                                        {# Powrót do rekomendacji i skasowanie wpisu własnego zapisują
+                                           od razu — to nie są zaznaczenia, tylko czynności, i trzymanie
+                                           ich do przycisku „Zapisz" byłoby myleniem dwóch rzeczy. #}
+                                        {% if bot.own_choice %}
+                                            <button type="submit" name="reset" value="{{ bot.key }}"
+                                                    class="qc-btn qc-btn-sm qc-btn-text">
+                                                {{ 'back to %what%'|trans({'%what%': bot.default_policy}) }}
+                                            </button>
+                                        {% endif %}
+
+                                        {% if bot.source == 'custom' %}
+                                            <button type="submit" name="remove" value="{{ bot.key }}"
+                                                    class="qc-btn qc-btn-sm qc-btn-text qc-danger">
+                                                {{ 'Remove'|trans }}
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="qc-card">
+            <div class="qc-card-body">
+                <div class="qc-empty">
+                    <div class="qc-empty-text">{{ 'The registry is empty. Reinstall the module to seed it.'|trans }}</div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+</form>
+
+{# Poza formularzem decyzji, bo formularz w formularzu nie jest poprawnym HTML-em. #}
+<form id="write-file" method="post" action="{{ path('quince_robots_write') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_robots_write') }}">
+</form>
+{% endblock %}

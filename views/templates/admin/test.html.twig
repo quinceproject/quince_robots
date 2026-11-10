@@ -1,0 +1,137 @@
+{# Co roboty naprawdę widzą.
+
+   Plik pobrany po HTTP i przepuszczony przez zasady RFC 9309 — te same, którymi
+   kieruje się robot. Wartością tego ekranu jest jedna kolumna: rozjazd między
+   decyzją a tym, co plik faktycznie mówi.
+
+   Wyłącznie klasy z paczki silnika. #}
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincerobots.Admin' %}
+
+{% block quince_intro %}
+    <div class="qc-alert qc-alert-info">
+        {{ icons.icon('info', 18, 'qc-alert-icon') }}
+        <div>
+            {{ 'The file is fetched over HTTP, the way a bot would read it. Not from disk. A server rule or a redirect can stand between the two.'|trans }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block quince_body %}
+<div class="qc-stack">
+
+    {% if not result.ok %}
+        <div class="qc-card">
+            <div class="qc-card-head">
+                <div>
+                    <div class="qc-card-title">{{ 'The file could not be read'|trans }}</div>
+                    <div class="qc-card-desc">{{ result.url }}</div>
+                </div>
+            </div>
+            <div class="qc-card-body qc-stack">
+                <div class="qc-alert qc-alert-warning">
+                    {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+                    <div>
+                        {{ result.error }}
+                        <div class="qc-field-note">
+                            {{ 'Until the file answers, no rule in it reaches any bot. Whatever the decisions screen says.'|trans }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+
+        {% if mismatches > 0 %}
+            <div class="qc-alert qc-alert-warning">
+                {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+                <div>
+                    {{ '%count% bots are treated differently than you decided. Write robots.txt to line them up.'|trans({'%count%': mismatches}) }}
+                </div>
+            </div>
+        {% else %}
+            <div class="qc-alert qc-alert-success">
+                {{ icons.icon('check', 18, 'qc-alert-icon') }}
+                <div>{{ 'Every bot is treated the way you decided.'|trans }}</div>
+            </div>
+        {% endif %}
+
+        <div class="qc-card">
+            <div class="qc-card-head">
+                <div>
+                    <div class="qc-card-title">{{ 'What each bot sees'|trans }}</div>
+                    <div class="qc-card-desc">
+                        {{ 'A bot reads one User-agent group and ignores every other, including *. The group column says which one it lands in.'|trans }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="qc-card-body qc-stack">
+                <div class="qc-table-wrap">
+                    <table class="qc-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'Bot'|trans }}</th>
+                                <th>{{ 'Group it reads'|trans }}</th>
+                                <th>{{ 'The file lets it in'|trans }}</th>
+                                <th>{{ 'You decided'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in result.rows %}
+                                <tr>
+                                    <td>
+                                        {{ row.label }}
+                                        <div class="qc-rep-sub">{{ labels[row.category].name|default(row.category) }}</div>
+                                    </td>
+                                    <td>
+                                        {% if row.group %}
+                                            <span class="qc-var">{{ row.group }}</span>
+                                        {% else %}
+                                            {# Brak grupy i brak `*` znaczy, że plik nic o tym robocie
+                                               nie mówi — czyli wolno mu wszystko. #}
+                                            <span class="qc-rep-sub">{{ 'no group. Nothing forbidden'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if row.allowed %}
+                                            <span class="qc-badge qc-badge-success">{{ 'yes'|trans }}</span>
+                                        {% else %}
+                                            <span class="qc-badge qc-badge-warning">{{ 'no'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if row.category == 'search' %}
+                                            <span class="qc-rep-sub">{{ 'SEO settings'|trans }}</span>
+                                        {% elseif row.mismatch %}
+                                            <span class="qc-badge qc-badge-danger">{{ row.wanted }}</span>
+                                        {% else %}
+                                            <span class="qc-rep-sub">{{ row.wanted }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="qc-card">
+            <div class="qc-card-head">
+                <div>
+                    <div class="qc-card-title">{{ 'The file as served'|trans }}</div>
+                    <div class="qc-card-desc">{{ result.url }}</div>
+                </div>
+            </div>
+            <div class="qc-card-body qc-stack">
+                <div class="qc-preview-box">{{ result.body }}</div>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+{% endblock %}
