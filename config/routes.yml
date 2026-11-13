@@ -1,9 +1,8 @@
 # Trasy panelu modułu.
 #
 # `_legacy_controller` wskazuje zakładkę silnika, tak jak w pozostałych modułach
-# linii. Moduł nie zakłada własnej zakładki — z ośmiu modułów Quince robi to tylko
-# silnik i `quince_cmp`, a wstawianie się do sekcji „Moduły" PrestaShopa dokłada
-# pozycję obok Marketplace'u i Menedżera modułów, czyli tam, gdzie nie nasze miejsce.
+# linii. Moduł nie zakłada własnej zakładki: wstawienie się do sekcji „Moduły"
+# PrestaShopa dokłada pozycję obok Marketplace'u i Menedżera modułów.
 #
 # Zakładka jest tym, do czego odnoszą się uprawnienia pracownika, więc atrybuty
 # `#[AdminSecurity]` w kontrolerze sprawdzają prawa do ekranów Quince jako całości.

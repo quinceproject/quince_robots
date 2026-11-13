@@ -18,7 +18,7 @@ use Quince\Robots\Storage\Schema;
  *
  * Migawka listy `ai-robots-txt/ai.robots.txt` (MIT) uzupełniona o pola, których
  * tamta nie ma: kategorię, sposób weryfikacji i naszą rekomendację. Kategoria
- * i rekomendacja to **nasz osąd**, nie fakt o bocie — tamta lista mówi, co bot
+ * i rekomendacja to **nasz osąd**, nie fakt o bocie. Tamta lista mówi, co bot
  * robi, ale nie mówi, czy go wpuścić.
  *
  * Wpisów jest tu 162, bo cała lista jedzie w module. Sprzedawca dostaje więc
@@ -29,10 +29,10 @@ use Quince\Robots\Storage\Schema;
  * (`default_policy`), a decyzja należy do sprzedawcy i zapisuje się osobno.
  *
  * Kategoria `search` jest w rejestrze wyłącznie po to, żeby ekran mógł pokazać,
- * że o tych robotach też wiemy. Blokiem w `robots.txt` nimi nie sterujemy —
+ * że o tych robotach też wiemy. Blokiem w `robots.txt` nimi nie sterujemy:
  * należą do panelu SEO PrestaShopa.
  *
- * **Czego tu nie ma i dlatego.** Z listy źródłowej pomijamy nazwy, które jako
+ * **Czego tu nie ma.** Z listy źródłowej pomijamy nazwy, które jako
  * fragment dopasowania złapałyby ruch, o który nikomu nie chodziło: `Spider`
  * (siedzi w nagłówku setek zwykłych indeksatorów), `Code` i `OpenAI` (ta ostatnia
  * jest w nagłówku GPTBota). Wszystkie trzy mają w źródle pusty wpis o producencie,

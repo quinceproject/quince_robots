@@ -19,10 +19,9 @@ use Quince\Robots\Storage\Schema;
  * Rejestr robotów: odczyt, decyzje sprzedawcy i uzgadnianie ze spisem.
  *
  * Trzy źródła wpisów mają różne prawa. `builtin` i `manifest` przychodzą z zewnątrz
- * i wolno je odświeżać — ale **wyłącznie w części opisowej**. Decyzja sprzedawcy
- * (`policy`, `enforce`, `active`) nie jest nigdy nadpisywana; gdyby była, człowiek,
- * który raz zablokował bota, znajdowałby go po miesiącu odblokowanego i nie
- * dowiedziałby się, dlaczego.
+ * i wolno je odświeżać, ale **wyłącznie w części opisowej**. Decyzja sprzedawcy
+ * (`policy`, `enforce`, `active`) nie jest nigdy nadpisywana. Gdyby była, bot
+ * raz zablokowany wracałby po odświeżeniu spisu odblokowany.
  *
  * `custom` to wpisy dodane ręcznie. Odświeżenie ich nie dotyka.
  */
@@ -34,7 +33,7 @@ final class BotRegistry
      * Rozpoznanie robota odbywa się przy **każdym** wejściu na stronę sklepu,
      * a wpisów jest kilkadziesiąt i mieszczą się w pamięci. Bez tego zapytanie
      * szłoby do bazy tyle razy, ile razy ktokolwiek zapyta o werdykt w jednym
-     * żądaniu — a pytać będą też inne moduły linii.
+     * żądaniu (pytają też inne moduły linii).
      *
      * @var array<int,array<string,mixed>>|null
      */
@@ -73,7 +72,7 @@ final class BotRegistry
     }
 
     /**
-     * Wpisy pogrupowane kategoriami — tak wygląda ekran i tak zapada decyzja.
+     * Wpisy pogrupowane kategoriami, w układzie ekranu decyzji.
      *
      * @return array<string,array<int,array<string,mixed>>>
      */
@@ -91,8 +90,8 @@ final class BotRegistry
     /**
      * Wpisy, które trafiają do `robots.txt` jako zakaz.
      *
-     * Dwa pominięcia, oba celowe. Zgoda nie generuje **żadnej** grupy — robot
-     * spada wtedy do `User-agent: *` i dostaje zakazy rdzenia; wypisanie mu
+     * Dwa pominięcia, oba celowe. Zgoda nie generuje **żadnej** grupy: robot
+     * spada wtedy do `User-agent: *` i dostaje zakazy rdzenia, a wypisanie mu
      * `Allow: /` odcięłoby go od nich. Wyszukiwarek nie dotykamy w ogóle, bo
      * należą do panelu SEO.
      *
@@ -111,7 +110,7 @@ final class BotRegistry
     /**
      * Wpis pasujący do nagłówka przeglądarki albo `null`.
      *
-     * Dopasowanie po fragmencie, bez rozróżniania wielkości liter — bot podaje
+     * Dopasowanie po fragmencie, bez rozróżniania wielkości liter. Bot podaje
      * swoją nazwę wewnątrz dłuższego napisu, razem z wersją i adresem strony
      * producenta. Dłuższe tokeny sprawdzamy pierwsze, bo `Applebot-Extended`
      * zawiera w sobie `Applebot` i bez tego wygrywałby ten drugi.
@@ -138,10 +137,7 @@ final class BotRegistry
     }
 
     /**
-     * Decyzja sprzedawcy o jednym wpisie.
-     *
-     * Pusta `policy` znaczy „wróć do naszej rekomendacji", i to jest stan osobny
-     * od obu decyzji — sprzedawca ma móc się wycofać, a nie tylko przestawić.
+     * Kategoria nadana wpisowi przez sprzedawcę.
      */
     public function setCategory(string $klucz, string $kategoria): bool
     {
@@ -154,8 +150,7 @@ final class BotRegistry
             [
                 'category' => pSQL($kategoria),
                 // Znacznik, którego pilnuje `sync()`. Bez niego odświeżenie spisu
-                // wróciłoby wpis do naszej kategorii, sprzedawca znalazłby go po
-                // tygodniu w złym worku i nie miałby jak dojść dlaczego.
+                // wróciłoby wpis do naszej kategorii.
                 'category_own' => 1,
                 'date_upd' => date('Y-m-d H:i:s'),
             ],
@@ -167,6 +162,12 @@ final class BotRegistry
         return $ok;
     }
 
+    /**
+     * Decyzja sprzedawcy o jednym wpisie.
+     *
+     * Pusta `policy` znaczy „wróć do naszej rekomendacji" i jest stanem osobnym
+     * od obu decyzji.
+     */
     public function setPolicy(string $klucz, string $polityka, ?bool $egzekwuj = null): bool
     {
         $dozwolone = ['', Schema::POLICY_ALLOW, Schema::POLICY_BLOCK];
@@ -195,9 +196,7 @@ final class BotRegistry
     /**
      * Dokłada wpis własny.
      *
-     * Istnieje, bo nowy bot pojawia się w sieci wcześniej, niż trafia na jakąkolwiek
-     * listę — naszą również. Bez tej możliwości sprzedawca widzi go w liczniku
-     * i nie może z tym nic zrobić, dopóki nie wydamy nowej wersji modułu.
+     * Dla botów, których nie ma jeszcze na żadnej liście, także naszej.
      *
      * Token jest jedynym polem, które musi być podane: po nim rozpoznajemy bota
      * i bez niego wpis nie znaczyłby nic.
@@ -241,8 +240,8 @@ final class BotRegistry
             'docs_url' => '',
             'verify_host' => '',
             // Wpis własny nie ma za sobą dokumentacji producenta, więc o tym, czy bot
-            // honoruje `robots.txt`, nic nie wiemy. „unclear" jest tu prawdą, a nie
-            // ostrożnością — i sprawia, że egzekwowanie go nie obejmuje.
+            // honoruje `robots.txt`, nic nie wiemy. „unclear" sprawia też, że
+            // egzekwowanie go nie obejmuje.
             'respects' => pSQL(($dane['respects'] ?? '') === 'no' ? 'no' : 'unclear'),
             'default_policy' => pSQL($polityka),
             'policy' => '',
@@ -261,9 +260,8 @@ final class BotRegistry
     /**
      * Kasuje wpis własny.
      *
-     * Wpisów `builtin` i `manifest` nie kasujemy — wróciłyby przy najbliższym
-     * odświeżeniu spisu i wyglądałoby to na usterkę. Te wyłącza się decyzją
-     * „wpuść", nie usunięciem.
+     * Wpisów `builtin` i `manifest` nie kasujemy, bo wróciłyby przy najbliższym
+     * odświeżeniu spisu. Te wyłącza się decyzją „wpuść", nie usunięciem.
      */
     public function remove(string $klucz): bool
     {
@@ -282,7 +280,7 @@ final class BotRegistry
      *
      * Nagłówki botów mają postać `Nazwa/wersja`, często schowaną w środku napisu
      * udającego przeglądarkę. Bierzemy ostatnią taką parę spoza zestawu nazw,
-     * które nosi każda przeglądarka — bo to zwykle ona jest właściwą nazwą bota.
+     * które nosi każda przeglądarka, bo to zwykle ona jest właściwą nazwą bota.
      *
      * To podpowiedź do formularza, a nie rozpoznanie. Ostatnie słowo ma człowiek,
      * bo pomyłka w tokenie blokuje ruch, którego nikt nie chciał zablokować.
@@ -305,8 +303,7 @@ final class BotRegistry
 
     /**
      * Klucz, którego jeszcze nie ma. Przy zbiegu nazw dokładamy liczbę, zamiast
-     * odmawiać — sprzedawca dodający drugi wpis o podobnej nazwie nie ma powodu
-     * wiedzieć, że pierwszy zajął klucz.
+     * odmawiać.
      */
     private function wolnyKlucz(string $token): string
     {
@@ -330,11 +327,9 @@ final class BotRegistry
      *
      * Reguła jest jedna i pilnuje jej ta metoda: **odświeżamy opis, nigdy decyzję**.
      * `policy`, `enforce` i `active` należą do sprzedawcy i spis ich nie dotyka.
-     * Gdyby dotykał, człowiek, który raz zablokował bota, znajdowałby go po miesiącu
-     * odblokowanego i nie dowiedziałby się, dlaczego.
      *
-     * `default_policy` odświeżamy, bo to nasza rekomendacja, nie jego wybór — ale
-     * skutek ma tylko tam, gdzie sprzedawca nic nie postanowił.
+     * `default_policy` odświeżamy, bo to nasza rekomendacja, nie jego wybór. Skutek
+     * ma tylko tam, gdzie sprzedawca nic nie postanowił.
      *
      * Wpisów własnych nie ruszamy w ogóle. Sprzedawca dodał je, bo spis ich nie miał.
      *
@@ -366,8 +361,8 @@ final class BotRegistry
             $wlasnaKategoria = ($istniejace[$klucz]['category_own'] ?? false) === true;
 
             // Przepisujemy **tylko pola, które w przysłanym wpisie są**. Brak pola
-            // znaczy „spis nic o tym nie mówi", a nie „wyczyść to, co wiemy" —
-            // inaczej jeden wpis bez `respects` kasowałby wiedzę o tym, czy bot
+            // znaczy „spis nic o tym nie mówi", a nie „wyczyść to, co wiemy".
+            // Inaczej jeden wpis bez `respects` kasowałby wiedzę o tym, czy bot
             // honoruje `robots.txt`, a od niej zależy egzekwowanie.
             $opis = ['token' => pSQL($token), 'date_upd' => $teraz];
 
@@ -404,8 +399,8 @@ final class BotRegistry
             }
 
             if (!isset($istniejace[$klucz])) {
-                // Przy nowym wpisie pola, których spis nie podał, muszą mieć wartość
-                // — tabela ma dla nich wartości domyślne, ale etykieta pusta zamiast
+                // Przy nowym wpisie pola, których spis nie podał, muszą mieć wartość.
+                // Tabela ma dla nich wartości domyślne, ale etykieta pusta zamiast
                 // nazwy bota wyglądałaby na uszkodzony wiersz.
                 if ($db->insert(Schema::TABLE_BOT, $opis + [
                     'label' => pSQL($token),
@@ -453,16 +448,14 @@ final class BotRegistry
      * Odnotowuje wpisy, których na liście źródłowej już nie ma.
      *
      * Nie kasujemy ich i nie wyłączamy. Zniknięcie z listy bywa cudzym
-     * porządkowaniem — ktoś uznał wpis za duplikat albo za zbyt ogólny — a nie
-     * znakiem, że bot przestał chodzić. Kasowanie zdejmowałoby wtedy ochronę
-     * na podstawie decyzji redakcyjnej, o której sprzedawca się nie dowie.
+     * porządkowaniem (wpis uznany za duplikat albo za zbyt ogólny), a nie
+     * znakiem, że bot przestał chodzić. Kasowanie zdejmowałoby wtedy ochronę.
      * Linia `Disallow` dla bota, którego naprawdę nie ma, nic nie kosztuje.
      *
-     * **Warunek, bez którego byśmy tego nie robili.** „Nie ma go na liście"
-     * wnioskujemy z tego, czego w pliku nie zobaczyliśmy, a plik potrafi przyjść
-     * obcięty albo w zmienionym kształcie. Oznaczamy więc dopiero wtedy, gdy lista
-     * wygląda na kompletną; inaczej jedno kulawe pobranie oznaczyłoby cały rejestr
-     * jako nieistniejący i ekran zrobiłby się jednym wielkim ostrzeżeniem.
+     * **Warunek.** „Nie ma go na liście" wnioskujemy z tego, czego w pliku nie
+     * zobaczyliśmy, a plik potrafi przyjść obcięty albo w zmienionym kształcie.
+     * Oznaczamy więc dopiero wtedy, gdy lista wygląda na kompletną. Inaczej jedno
+     * kulawe pobranie oznaczyłoby cały rejestr jako nieistniejący.
      *
      * @param array<int,string>                 $zListy
      * @param array<string,array<string,mixed>> $istniejace
@@ -484,8 +477,8 @@ final class BotRegistry
         $obecne = array_map(static fn (string $k): string => '"' . pSQL($k) . '"', $zListy);
         $lista = implode(',', $obecne);
 
-        // Wpis, który wrócił, przestaje być oznaczony — bez tego znacznik zostawałby
-        // na zawsze i po roku nie znaczyłby już nic.
+        // Wpis, który wrócił, przestaje być oznaczony. Bez tego znacznik
+        // zostawałby na zawsze.
         $db->execute(
             'UPDATE `' . _DB_PREFIX_ . Schema::TABLE_BOT . '`
                 SET `off_list_since` = NULL
@@ -504,7 +497,7 @@ final class BotRegistry
     }
 
     /**
-     * Zakłada zestaw startowy. Pomija wpisy, które już są — instalacja ponowna
+     * Zakłada zestaw startowy. Pomija wpisy, które już są, więc instalacja ponowna
      * nie kasuje decyzji podjętych wcześniej.
      */
     public function seed(): bool
@@ -516,7 +509,7 @@ final class BotRegistry
             // Klucz powtórzony **w samym zestawie** też pomijamy, nie tylko taki,
             // który jest już w bazie. Bez tego pomyłka w zestawie kończy się nie
             // brakiem jednego wpisu, lecz przerwaną instalacją i rejestrem
-            // uciętym w połowie — a przyczyny nie widać nigdzie w panelu.
+            // uciętym w połowie, bez śladu przyczyny w panelu.
             if (in_array($bot['key'], $istniejace, true)) {
                 continue;
             }
@@ -555,7 +548,7 @@ final class BotRegistry
     /**
      * Skrót stanu, po którym poznajemy, czy `robots.txt` jest aktualny.
      *
-     * Liczony z tego, co do pliku trafia — nie z całego rejestru. Zmiana opisu
+     * Liczony z tego, co do pliku trafia, nie z całego rejestru. Zmiana opisu
      * bota nie ma powodu unieważniać pliku.
      */
     public function stamp(): string
@@ -586,9 +579,9 @@ final class BotRegistry
     /**
      * Wiersz bazy w postać, jakiej oczekuje reszta modułu.
      *
-     * `effective_policy` liczymy tutaj, w jednym miejscu — inaczej każdy ekran
+     * `effective_policy` liczymy tutaj, w jednym miejscu. Inaczej każdy ekran
      * i każdy zapis do pliku musiałby pamiętać, że pusta `policy` znaczy
-     * „rekomendacja", i prędzej czy później któryś by zapomniał.
+     * „rekomendacja".
      *
      * @param array<string,mixed> $wiersz
      *
@@ -634,8 +627,7 @@ final class BotRegistry
      * - albo sprzedawca wymusił egzekwowanie na tym wpisie mimo wszystko
      *
      * Kolumna `enforce` jest więc wyjątkiem od reguły, a nie samą regułą. Dzięki temu
-     * włącznik ogólny działa od razu po włączeniu, bez przechodzenia po wpisach —
-     * a wpisów, których dotyczy, jest kilka, nie kilkadziesiąt.
+     * włącznik ogólny działa od razu po włączeniu, bez przechodzenia po wpisach.
      *
      * @param array<string,mixed> $wiersz
      */

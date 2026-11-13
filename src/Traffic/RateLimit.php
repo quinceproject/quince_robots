@@ -19,7 +19,7 @@ use Quince\Robots\Storage\Schema;
  * Próg częstości żądań z jednego adresu.
  *
  * Rozpoznawanie po nagłówku łapie tylko te automaty, które się przedstawiają.
- * Ruch, przed którym ten próg ma chronić, z definicji tego nie robi — podszywa
+ * Ruch, przed którym ten próg ma chronić, z definicji tego nie robi: podszywa
  * się pod przeglądarkę i przechodzi obok rejestru. Zostaje liczenie żądań.
  *
  * Licznik żyje minutami, nie miesiącami: interesuje nas ostatnich kilka minut,
@@ -56,7 +56,7 @@ final class RateLimit
 
         // Sprzątanie przy jednym na sto żądań. Wołanie go za każdym razem dokładałoby
         // kasowanie do każdej odsłony sklepu, a tabela rośnie o wiersz na adres na
-        // minutę — na tyle wolno, że opóźnienie o kilkadziesiąt żądań nic nie zmienia.
+        // minutę, na tyle wolno, że opóźnienie o kilkadziesiąt żądań nic nie zmienia.
         if (random_int(1, 100) === 1) {
             $this->purge();
         }
@@ -80,7 +80,7 @@ final class RateLimit
         $prog = max(1, Options::int(Options::RATE_LIMIT, 120));
         $od = date('Y-m-d H:i:00', strtotime('-' . $this->odstawienie() . ' minutes'));
 
-        // Bez własnego `LIMIT` — `getValue()` dokłada swój i dwa obok siebie
+        // Bez własnego `LIMIT`: `getValue()` dokłada swój i dwa obok siebie
         // są błędem składni.
         return (bool) Db::getInstance()->getValue(
             'SELECT 1 FROM `' . _DB_PREFIX_ . Schema::TABLE_RATE . '`
@@ -116,7 +116,7 @@ final class RateLimit
     /**
      * Kasuje minuty, które przestały być potrzebne.
      *
-     * Granica idzie za okresem odstawienia z zapasem — skasowanie minuty, na którą
+     * Granica idzie za okresem odstawienia z zapasem. Skasowanie minuty, na którą
      * jeszcze patrzymy, wypuszczałoby odstawiony adres przed czasem.
      */
     public function purge(): int

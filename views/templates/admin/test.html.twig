@@ -1,8 +1,8 @@
 {# Co roboty naprawdę widzą.
 
-   Plik pobrany po HTTP i przepuszczony przez zasady RFC 9309 — te same, którymi
-   kieruje się robot. Wartością tego ekranu jest jedna kolumna: rozjazd między
-   decyzją a tym, co plik faktycznie mówi.
+   Plik pobrany po HTTP i przepuszczony przez zasady RFC 9309, te same, którymi
+   kieruje się robot. Kluczowa jest kolumna rozjazdu między decyzją a tym, co
+   plik faktycznie mówi.
 
    Wyłącznie klasy z paczki silnika. #}
 {% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
@@ -91,7 +91,7 @@
                                             <span class="qc-var">{{ row.group }}</span>
                                         {% else %}
                                             {# Brak grupy i brak `*` znaczy, że plik nic o tym robocie
-                                               nie mówi — czyli wolno mu wszystko. #}
+                                               nie mówi, czyli wolno mu wszystko. #}
                                             <span class="qc-rep-sub">{{ 'no group. Nothing forbidden'|trans }}</span>
                                         {% endif %}
                                     </td>

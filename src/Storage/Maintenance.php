@@ -17,18 +17,12 @@ use Quince\Robots\Traffic\TrafficLog;
 /**
  * Sprzątanie po module: kasowanie danych, które przestały być potrzebne.
  *
- * PrestaShop nie daje modułom własnego zegara — moduł `cronjobs` bywa
- * zainstalowany, ale zakładanie go nie jest wolno. Zostaje uruchamianie
- * sprzątania przy okazji cudzej pracy, i wybór jest tylko jeden: albo przy
- * żądaniu odwiedzającego, albo przy otwarciu panelu.
+ * PrestaShop nie daje modułom własnego zegara (moduł `cronjobs` bywa
+ * zainstalowany, ale zakładać go nie wolno). Sprzątanie rusza więc przy
+ * otwarciu panelu, raz na dobę, żeby odwiedzający nie czekał na kasowanie
+ * wierszy.
  *
- * Wybieramy panel. Odwiedzający nie ma czekać na kasowanie wierszy, których
- * istnienia nie jest świadom, a pracownik i tak czeka na wczytanie strony
- * panelu. Raz na dobę, bo częściej nie ma czego kasować.
- *
- * Konsekwencję trzeba nazwać wprost: **sklep, do którego nikt się nie loguje,
- * nie sprząta.** Jest to do przyjęcia, bo do panelu wchodzi się po zamówienia,
- * a sklep bez zamówień i bez logowań nie ma też ruchu do skasowania.
+ * **Sklep, do którego nikt się nie loguje, nie sprząta.**
  */
 final class Maintenance
 {

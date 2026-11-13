@@ -19,12 +19,12 @@ use Quince\Robots\Storage\Schema;
  *
  * Jedna reguła rządzi całą tą klasą i jest łatwa do przeoczenia:
  *
- * > Robot wybiera **jedną** grupę `User-agent` — najlepiej pasującą do siebie —
+ * > Robot wybiera **jedną** grupę `User-agent` (najlepiej pasującą do siebie)
  * > i **ignoruje wszystkie pozostałe**, w tym `User-agent: *` (RFC 9309 §2.2.1).
  *
  * Stąd wniosek odwrotny do intuicji: **dozwolonemu robotowi nie piszemy nic**.
  * Wypisanie mu `User-agent: X` z `Allow: /` odcięłoby go od grupy ogólnej,
- * a wraz z nią od wszystkich zakazów rdzenia — koszyka, kasy, konta klienta,
+ * a wraz z nią od wszystkich zakazów rdzenia: koszyka, kasy, konta klienta,
  * `/modules/`, `/var/`. Zamiast „wpuść go" powstałoby „wpuść go wszędzie,
  * także tam, gdzie nikogo nie wpuszczamy".
  *
@@ -44,8 +44,8 @@ final class RobotsBlock
     }
 
     /**
-     * Treść bloku razem ze znacznikami. Pusty napis, gdy nie ma czego blokować —
-     * wtedy nie zostawiamy w pliku samych nagłówków bez zawartości.
+     * Treść bloku razem ze znacznikami. Pusty napis, gdy nie ma czego blokować:
+     * nie zostawiamy w pliku samych nagłówków bez zawartości.
      */
     public function render(): string
     {
@@ -84,7 +84,7 @@ final class RobotsBlock
 
     /**
      * Grupowanie kategoriami służy człowiekowi, nie robotom. Plik `robots.txt`
-     * bywa czytany przez sprzedawcę i przez audytora — „# AI training bots"
+     * bywa czytany przez sprzedawcę i przez audytora, a „# AI training bots"
      * nad listą powie im więcej niż dwadzieścia grup pod rząd.
      *
      * @param array<int,array<string,mixed>> $boty

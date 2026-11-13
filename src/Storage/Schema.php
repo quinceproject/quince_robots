@@ -19,8 +19,8 @@ use Db;
  * Trzy: rejestr robotów, dzienny licznik odwiedzin i krótkotrwały licznik
  * częstości.
  *
- * Rejestr **nie ma kolumny sklepu**, i to nie jest przeoczenie. `robots.txt` jest
- * jeden na instalację, w katalogu głównym — nie da się zablokować bota w jednym
+ * Rejestr **nie ma kolumny sklepu**. `robots.txt` jest jeden na instalację,
+ * w katalogu głównym, więc nie da się zablokować bota w jednym
  * sklepie, a wpuścić w drugim, jeśli oba stoją na tej samej instalacji.
  * Kolumna sklepu obiecywałaby wybór, którego nie ma.
  *
@@ -75,7 +75,7 @@ final class Schema
     {
         $prefix = _DB_PREFIX_;
 
-        // Tabela z poprzedniej postaci dziennika — kasowana razem z resztą, żeby
+        // `quince_robots_hit` to tabela z poprzedniej postaci dziennika, kasowana, żeby
         // odinstalowanie nie zostawiało po module niczego.
         foreach ([self::TABLE_RATE, self::TABLE_DAY, 'quince_robots_hit', self::TABLE_BOT] as $tabela) {
             if (!Db::getInstance()->execute('DROP TABLE IF EXISTS `' . $prefix . $tabela . '`')) {
@@ -130,7 +130,7 @@ final class Schema
         return [
             // --- rejestr robotów -------------------------------------------------
             //
-            // `bot_key`, nie `key` — `key` jest słowem zastrzeżonym MySQL-a i zapytanie
+            // `bot_key`, nie `key`: `key` jest słowem zastrzeżonym MySQL-a i zapytanie
             // bez odwrotnych apostrofów wywracałoby się w sposób trudny do odczytania.
             //
             // `policy` pusty znaczy „bierz `default_policy`". Rozdzielenie tych dwóch
@@ -138,13 +138,13 @@ final class Schema
             // nie dotykając decyzji sprzedawcy.
             //
             // `off_list_since` to data, od której wpisu nie ma już na liście źródłowej;
-            // pusta znaczy, że jest. Wpisu wtedy nie kasujemy ani nie wyłączamy —
+            // pusta znaczy, że jest. Wpisu wtedy nie kasujemy ani nie wyłączamy:
             // zniknięcie z listy bywa cudzym porządkowaniem, a nie znakiem, że bot
             // przestał chodzić.
             //
             // `respects` pochodzi z listy źródłowej i mówi, czy bot honoruje `robots.txt`.
             // To jedyna przesłanka, na której sensownie włącza się egzekwowanie po stronie
-            // serwera — przy bocie, który plik szanuje, jest ono zbędne.
+            // serwera. Przy bocie, który plik szanuje, jest ono zbędne.
             'CREATE TABLE IF NOT EXISTS `' . $prefix . self::TABLE_BOT . '` (
                 `id_robots_bot` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `bot_key` VARCHAR(64) NOT NULL,
@@ -173,9 +173,7 @@ final class Schema
             // --- dzienny licznik odwiedzin ---------------------------------------
             //
             // Jeden wiersz na parę „bot + dzień", a każde wejście to `+1` do licznika.
-            // Wiersz na żądanie dawałby na średnim sklepie miliony wierszy w kwartał
-            // po to, żeby odpowiedzieć na pytanie „kto przychodzi i jak często" —
-            // a na to wystarcza licznik.
+            // Wiersz na żądanie dawałby na średnim sklepie miliony wierszy w kwartał.
             //
             // Klucz zawiera `ua_hash`, bo nierozpoznane automaty nie mają nazwy
             // w rejestrze i rozróżnia je wyłącznie nagłówek. Przy botach z rejestru

@@ -19,14 +19,13 @@ use Tools;
  * Stan pliku `robots.txt` i jego odbudowa.
  *
  * Rdzeń generuje ten plik w trzech miejscach, ale hooki odpalają się tylko
- * w jednym — `Tools::generateRobotsFile($executeHook)` dostaje `true` wyłącznie
+ * w jednym: `Tools::generateRobotsFile($executeHook)` dostaje `true` wyłącznie
  * z `RobotsTextFileGenerator`, czyli z przycisku w panelu SEO. Wywołanie
  * z `AdminShopUrlController` przy zmianie adresu sklepu idzie **bez** hooków,
- * więc nasz blok znika po cichu i nikt się o tym nie dowiaduje.
+ * więc nasz blok znika po cichu.
  *
- * Ta klasa jest odpowiedzią na tamtą lukę: przy wejściu na ekran modułu sprawdzamy
- * plik tanim odczytem i mówimy wprost, że blok wyparował, zamiast czekać, aż ktoś
- * zauważy, że boty znów chodzą.
+ * Dlatego przy wejściu na ekran modułu sprawdzamy plik tanim odczytem i mówimy
+ * wprost, że blok wyparował.
  */
 final class RobotsFile
 {
@@ -81,10 +80,10 @@ final class RobotsFile
     /**
      * Każe rdzeniowi przepisać plik, razem z naszym hookiem.
      *
-     * Nie piszemy do `robots.txt` sami i nie będziemy. Dwa procesy piszące do
-     * jednego pliku kończą się plikiem uciętym w połowie, a poza tym cała reszta
-     * jego treści — zakazy katalogów, mapa witryny, sekcje per domena — należy
-     * do rdzenia i tylko on wie, jak ją złożyć.
+     * Nie piszemy do `robots.txt` sami. Dwa procesy piszące do jednego pliku
+     * kończą się plikiem uciętym w połowie, a poza tym cała reszta jego treści
+     * (zakazy katalogów, mapa witryny, sekcje per domena) należy do rdzenia
+     * i tylko on wie, jak ją złożyć.
      */
     public function rebuild(): bool
     {

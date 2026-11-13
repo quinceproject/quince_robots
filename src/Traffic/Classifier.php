@@ -19,19 +19,19 @@ use Quince\Robots\Storage\Schema;
  *
  * Werdykt ma **trzy** stany, nie dwa, i to rozróżnienie jest tu najważniejsze:
  *
- * - `crawler` — robot z rejestru, potwierdzony odwrotnym DNS-em. Wolno mu pokazać
+ * - `crawler`: robot z rejestru, potwierdzony odwrotnym DNS-em. Wolno mu pokazać
  *   sklep w komplecie i nie zapisujemy po nim śladu w cudzych dziennikach
- * - `suspected` — nagłówek pasuje do wpisu, ale potwierdzenia nie ma
- * - `human` — nagłówek nie pasuje do niczego w rejestrze
+ * - `suspected`: nagłówek pasuje do wpisu, ale potwierdzenia nie ma
+ * - `human`: nagłówek nie pasuje do niczego w rejestrze
  *
  * Co z tego wynika, zależy od pytania, które odbiorca sobie zadaje, i te dwa
  * pytania mają różne odpowiedzi:
  *
- * **„Czy pokazać mu sklep bez ograniczeń?"** — tylko przy `crawler`. Gdyby
+ * **„Czy pokazać mu sklep bez ograniczeń?"** Tylko przy `crawler`. Gdyby
  * wystarczało „wygląda na bota", scraper podszywający się pod Googlebota
  * dostawałby odblokowaną stronę na samo słowo.
  *
- * **„Czy zapisać jego działanie jako decyzję człowieka?"** — nie, przy `crawler`
+ * **„Czy zapisać jego działanie jako decyzję człowieka?"** Nie, przy `crawler`
  * **i** przy `suspected`. Tu potwierdzenie nie jest potrzebne: coś, co przedstawia
  * się jako GPTBot, niczego nie postanawia, niezależnie od tego, czy naprawdę nim
  * jest. Dziennik zgód, do którego trafiają takie wpisy, przestaje być dowodem.
@@ -84,7 +84,7 @@ final class Classifier
         $potwierdzony = $doSprawdzenia && $this->verifier->verify($ip, $wpis['verify_host']);
 
         return [
-            // Bez potwierdzenia zostajemy przy „podejrzany" — nazwa w nagłówku
+            // Bez potwierdzenia zostajemy przy „podejrzany": nazwa w nagłówku
             // jest deklaracją, nie dowodem.
             'verdict' => $potwierdzony ? 'crawler' : 'suspected',
             'bot' => $wpis['key'],
@@ -102,11 +102,11 @@ final class Classifier
      * Trzy warunki naraz, i każdy z nich jest potrzebny:
      *
      * - decyzja sprzedawcy to blokada,
-     * - wpis ma włączone egzekwowanie — bo przy bocie honorującym `robots.txt`
-     *   odrzucanie żądań jest zbędne, a przy pomyłce w regule kosztowne,
-     * - robot jest **potwierdzony**. To brzmi odwrotnie do intuicji, ale bez tego
-     *   wystarczyłoby podać się za zablokowanego bota, żeby wywołać naszą blokadę
-     *   — albo za dozwolonego, żeby ją ominąć. Odrzucamy więc tylko tych, o których
+     * - wpis ma włączone egzekwowanie (przy bocie honorującym `robots.txt`
+     *   odrzucanie żądań jest zbędne, a przy pomyłce w regule kosztowne),
+     * - robot jest **potwierdzony**. Bez tego wystarczyłoby podać się za
+     *   zablokowanego bota, żeby wywołać naszą blokadę, albo za dozwolonego,
+     *   żeby ją ominąć. Odrzucamy więc tylko tych, o których
      *   wiemy, kim są. Reszta jest sprawą warstwy od ruchu, nie naszą.
      *
      * @param array{verdict:string,policy:string,enforce:bool,verified:bool} $werdykt

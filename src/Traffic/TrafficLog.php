@@ -18,15 +18,10 @@ use Quince\Robots\Storage\Schema;
 /**
  * Licznik odwiedzin automatów, dzień po dniu.
  *
- * Nie zapisujemy żądań — zapisujemy, że dany bot był dziś tyle a tyle razy.
- * Wiersz na żądanie dawałby na średnim sklepie miliony wierszy w kwartał po to,
- * żeby odpowiedzieć na pytanie, kto przychodzi i jak często; na to wystarcza
- * licznik i jest go kilkaset zamiast miliona.
+ * Nie zapisujemy żądań, tylko to, że dany bot był dziś tyle a tyle razy.
+ * Wiersz na żądanie dawałby na średnim sklepie miliony wierszy w kwartał.
  *
- * Tracimy przy tym możliwość powiedzenia „ten bot wszedł o 14:32 na tę stronę".
- * Do decyzji „wpuszczam czy nie" nie jest to potrzebne, a adresów IP w ogóle
- * nie przechowujemy — dzięki czemu ta tabela nie niesie danych osobowych
- * i nie potrzebuje terminu z żadnego przepisu, tylko z rozsądku.
+ * Adresów IP nie przechowujemy, więc ta tabela nie niesie danych osobowych.
  */
 final class TrafficLog
 {

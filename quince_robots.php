@@ -26,16 +26,14 @@ use Quince\Robots\Traffic\TrafficLog;
 use Quince\Robots\Traffic\Verifier;
 
 /**
- * Quince Robots — kto z automatów wchodzi do sklepu i na jakich zasadach.
+ * Quince Robots: kto z automatów wchodzi do sklepu i na jakich zasadach.
  *
  * Moduł jest jedyną warstwą w linii Quince, która zajmuje się ruchem automatów.
  * Pozostałe moduły go pytają hookiem `actionQuinceClassifyVisitor`, ale same
  * nikogo nie rozpoznają i nikogo nie blokują.
  *
- * **Wymaga silnika.** Ekran modułu siedzi w jego powłoce — ten sam boczny pasek
- * i te same komponenty co reszta panelu Quince, bez kopiowania czegokolwiek.
- * Decyzja właściciela projektu z 03.09.2026, zastępująca wcześniejsze założenie
- * o samodzielności modułu.
+ * **Wymaga silnika.** Ekran modułu siedzi w jego powłoce: ten sam boczny pasek
+ * i te same komponenty co reszta panelu Quince.
  *
  * Zależność dotyczy wyłącznie panelu. Rozpoznawanie robotów, `robots.txt` i licznik
  * odwiedzin nie sięgają do silnika ani razu.
@@ -129,21 +127,17 @@ class Quince_Robots extends Module
     /**
      * Zgłoszenie do silnika: co dostarczamy i gdzie tego szukać.
      *
-     * **Bez `type`, i to nie jest przeoczenie.** Typ jest potrzebny wyłącznie
-     * wtedy, gdy silnik ma z możliwości skorzystać — wybrać dostawcę wyszukiwarki
-     * albo menu spośród kilku. Ten moduł niczego nie dostarcza silnikowi; mówi
-     * tylko „mam własny ekran, oto jego adres". Wpisanie mu typu byłoby wymyśleniem
-     * pojęcia po to, żeby wypełnić pole.
+     * **Bez `type`.** Typ jest potrzebny wyłącznie wtedy, gdy silnik ma
+     * z możliwości skorzystać (wybrać dostawcę wyszukiwarki albo menu spośród
+     * kilku). Ten moduł niczego nie dostarcza silnikowi, zgłasza tylko adres
+     * własnego ekranu.
      *
      * Zgłoszenie jest bezpieczne także wtedy, gdy silnika nie ma albo jest starszy
-     * i deklaracji nie przyjmie — ekran wisi wtedy osobno, na liście modułów,
-     * i wszystko działa dalej.
+     * i deklaracji nie przyjmie. Ekran wisi wtedy osobno, na liście modułów.
      *
      * **Zgłaszamy się dopiero, gdy trasa naprawdę istnieje.** Silnik przy braku
-     * routera nie umie sprawdzić trasy i wtedy pozycję pokazuje — słusznie, bo
-     * ukrywanie wszystkiego niesprawdzonego kasowało całą grupę „Moduły". Ale
-     * znaczy to, że moduł zgłaszający trasę, której nie ma, wywraca panel przy
-     * budowaniu odnośnika. Zabezpieczenie silnika jest siatką, nie przyzwoleniem.
+     * routera nie umie sprawdzić trasy i wtedy pozycję pokazuje, więc moduł
+     * zgłaszający trasę, której nie ma, wywraca panel przy budowaniu odnośnika.
      *
      * @return array<int,array{id:string,label:string,route:string,icon:string}>
      */
@@ -169,8 +163,8 @@ class Quince_Robots extends Module
      *
      * Rdzeń otwiera plik w trybie zapisu i pisze go od zera, więc cokolwiek ktoś
      * wkleiłby tam ręcznie, znika przy pierwszym „Wygeneruj plik robots.txt".
-     * Ten hook daje **otwarty uchwyt** tuż przed zamknięciem pliku — dopisujemy
-     * się na końcu i pojawiamy się sami przy każdym generowaniu.
+     * Ten hook daje **otwarty uchwyt** tuż przed zamknięciem pliku. Dopisujemy
+     * się na końcu, więc blok wraca przy każdym generowaniu.
      *
      * @param array{rb_data?:array<string,mixed>,write_fd?:resource} $params
      */
@@ -196,10 +190,9 @@ class Quince_Robots extends Module
     /**
      * Rozpoznanie żądania: licznik odwiedzin i ewentualne odrzucenie.
      *
-     * Liczymy wyłącznie automaty — rozpoznane z rejestru albo takie, o których
+     * Liczymy wyłącznie automaty: rozpoznane z rejestru albo takie, o których
      * mówi `Connection::isBot()` z rdzenia. Wpisywanie tu każdego człowieka
-     * zamieniłoby licznik w rejestr odwiedzin sklepu, czyli w coś, czego ten
-     * moduł nie ma prawa prowadzić.
+     * zamieniłoby licznik w rejestr odwiedzin sklepu.
      *
      * @param array{controller_type?:int} $params
      */
@@ -216,7 +209,7 @@ class Quince_Robots extends Module
         $werdykt = $this->rozpoznaj($agent, $ip);
 
         // Próg częstości mierzy ruch, który się nie przedstawia, więc liczy
-        // wszystkich — także zwykłych odwiedzających. Domyślnie wyłączony.
+        // wszystkich, także zwykłych odwiedzających. Domyślnie wyłączony.
         if ((new RateLimit())->hit($ip)) {
             header('HTTP/1.1 429 Too Many Requests');
             header('Retry-After: 60');
@@ -251,8 +244,8 @@ class Quince_Robots extends Module
     /**
      * Sprzątanie po module, raz na dobę, przy okazji wejścia do panelu.
      *
-     * Nic nie zwracamy do nagłówka — moduł nie dokłada panelowi ani arkusza,
-     * ani skryptu. Hook jest tu wyłącznie zegarem, bo własnego moduł nie ma.
+     * Nic nie zwracamy do nagłówka. Hook jest tu wyłącznie zegarem, bo własnego
+     * moduł nie ma.
      */
     public function hookDisplayBackOfficeHeader(): string
     {
@@ -307,8 +300,7 @@ class Quince_Robots extends Module
      * Przycisk „Konfiguruj" w menedżerze modułów.
      *
      * Bez tej metody PrestaShop wygasza przycisk i do modułu nie da się wejść
-     * inaczej niż przez boczny pasek silnika — a sprzedawca, który właśnie go
-     * wgrał, szuka go najpierw tam, gdzie wgrywał.
+     * inaczej niż przez boczny pasek silnika.
      */
     public function getContent(): void
     {

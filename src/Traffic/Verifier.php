@@ -14,7 +14,7 @@ namespace Quince\Robots\Traffic;
 /**
  * Potwierdzenie, że robot jest tym, za kogo się podaje.
  *
- * Nagłówek nie jest dowodem — podszycie się pod Googlebota to jedna linia
+ * Nagłówek nie jest dowodem: podszycie się pod Googlebota to jedna linia
  * w kliencie HTTP. Bez weryfikacji „zweryfikowany robot" nie znaczyłoby nic,
  * a na tym werdykcie inne moduły opierają decyzje o swoich danych.
  *
@@ -29,9 +29,8 @@ namespace Quince\Robots\Traffic;
  * `googlebot.com` i przechodzi sprawdzenie.
  *
  * Zapytania DNS są wolne, więc odpytujemy wyłącznie przy adresach, które pasowały
- * do wpisu w rejestrze **i** mają włączone egzekwowanie — a to ułamek ułamka ruchu.
- * Wynik pamiętamy do końca żądania; dalej go nie przechowujemy, bo trzymanie
- * adresów IP w bazie po to, żeby oszczędzić zapytanie DNS, byłoby złą wymianą.
+ * do wpisu w rejestrze **i** mają włączone egzekwowanie. Wynik pamiętamy do końca
+ * żądania i nie zapisujemy go w bazie, żeby nie trzymać adresów IP.
  */
 final class Verifier
 {
@@ -41,7 +40,7 @@ final class Verifier
     /**
      * Czy adres należy do producenta wskazanego przez wpis.
      *
-     * Pusta domena znaczy, że producent nie daje się zweryfikować — zwracamy
+     * Pusta domena znaczy, że producent nie daje się zweryfikować. Zwracamy
      * `false`, bo „nie wiem" nie jest tym samym co „tak".
      */
     public function verify(string $ip, string $domena): bool
@@ -74,7 +73,7 @@ final class Verifier
     /**
      * Czy nazwa rozwiązuje się z powrotem na ten sam adres.
      *
-     * Sprawdzamy obie rodziny adresów — robot przychodzący po IPv6 ma wpis AAAA,
+     * Sprawdzamy obie rodziny adresów: robot przychodzący po IPv6 ma wpis AAAA,
      * a `gethostbynamel` zna wyłącznie IPv4 i milczałby o nim.
      */
     private function wracaDoAdresu(string $nazwa, string $ip): bool

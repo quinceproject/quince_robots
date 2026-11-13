@@ -1,9 +1,8 @@
 {# Ruch automatów: kto przychodzi i jak często.
 
-   Dwie listy, i ta druga jest ważniejsza. Pierwsza mówi, co robią roboty,
-   o których wiemy — i czy decyzja podjęta na sąsiednim ekranie ma jakikolwiek
-   skutek. Druga pokazuje automaty, których rejestr nie zna, i pozwala je dopisać
-   od razu: nowy bot pojawia się w sieci wcześniej, niż trafia na jakąkolwiek listę.
+   Dwie listy. Pierwsza mówi, co robią roboty, o których wiemy, i czy decyzja
+   podjęta na sąsiednim ekranie ma jakikolwiek skutek. Druga pokazuje automaty,
+   których rejestr nie zna, i pozwala je dopisać od razu.
 
    Wyłącznie klasy z paczki silnika. #}
 {% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
@@ -110,8 +109,8 @@
                     {% for row in unknown %}
                         <div class="qc-rep-row">
                             {# Głowa jedną linią, tak jak repeatery w silniku. Nagłówek bywa
-                               długi i zostaje tu przycięty — w całości widać go niżej,
-                               w polu, w którym i tak trzeba go przejrzeć przed dodaniem. #}
+                               długi i zostaje tu przycięty. W całości widać go niżej,
+                               w polu formularza dodawania. #}
                             <div class="qc-rep-row-head">
                                 <span class="qc-rep-name">
                                     {{ row.user_agent }}

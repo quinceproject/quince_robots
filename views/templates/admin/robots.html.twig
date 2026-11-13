@@ -1,21 +1,16 @@
 {# Ekran robotów: kto puka do sklepu i kogo wpuszczamy.
 
-   Każda kategoria to osobna karta, bo decyzja zapada wobec grupy — „nie chcę,
-   żeby ktokolwiek karmił moimi opisami swojego modelu". Pojedynczy robot jest
-   wyjątkiem od tej decyzji, więc siedzi w karcie, a nie obok niej.
+   Każda kategoria to osobna karta, bo decyzja zapada wobec grupy. Pojedynczy
+   robot jest wyjątkiem od tej decyzji, więc siedzi w karcie, a nie obok niej.
 
-   **Zaznaczanie, nie zapisywanie.** Cały ekran jest jednym formularzem, a zapis
-   siedzi w dolnym pasku silnika. Wcześniej każde kliknięcie było osobnym zapisem
-   i przeładowaniem strony — przy stu kilkudziesięciu wpisach nie do wytrzymania.
+   Cały ekran jest jednym formularzem, a zapis siedzi w dolnym pasku silnika.
 
-   **Wszystko o bocie jest widoczne od razu**, bez rozwijania: opis, nazwa
-   w nagłówku, kategoria i przełącznik. Kto przegląda listę, żeby zdecydować,
-   musi widzieć, co to za jeden — a kto przestawia kategorie w kilkunastu wpisach,
-   nie może do każdego wchodzić osobno.
+   Wszystko o bocie jest widoczne od razu, bez rozwijania: opis, nazwa
+   w nagłówku, kategoria i przełącznik.
 
    Dwa `style` przy elementach są tu konieczne i nie da się ich zastąpić klasą
    z paczki: `qc-rep-name` jest z założenia jednoliniowy (`white-space:nowrap`
-   plus wielokropek), a nasz wiersz niesie opis. To luka w paczce, nie wybór. #}
+   plus wielokropek), a nasz wiersz niesie opis. #}
 {% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
 {% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
 
@@ -85,7 +80,7 @@
                     <div class="qc-card-desc">{{ opis.hint }}</div>
                 </div>
 
-                {# Wyszukiwarek nie da się stąd zablokować — steruje nimi panel SEO
+                {# Wyszukiwarek nie da się stąd zablokować: steruje nimi panel SEO
                    sklepu, a dwa miejsca sterujące tym samym kończą się tym, że
                    jedno nadpisuje drugie. #}
                 {% if category != 'search' %}
@@ -117,7 +112,7 @@
                                     {% endif %}
 
                                     {# Wpis, którego nie ma już na liście źródłowej. Zostaje razem
-                                       z decyzją — zniknięcie stamtąd bywa cudzym porządkowaniem,
+                                       z decyzją: zniknięcie stamtąd bywa cudzym porządkowaniem,
                                        a nie znakiem, że bot przestał chodzić. #}
                                     {% if bot.off_list_since %}
                                         <span class="qc-badge">{{ 'off the source list since %when%'|trans({'%when%': bot.off_list_since}) }}</span>
@@ -188,8 +183,7 @@
                                         </div>
 
                                         {# Powrót do rekomendacji i skasowanie wpisu własnego zapisują
-                                           od razu — to nie są zaznaczenia, tylko czynności, i trzymanie
-                                           ich do przycisku „Zapisz" byłoby myleniem dwóch rzeczy. #}
+                                           od razu, bez czekania na przycisk „Zapisz". #}
                                         {% if bot.own_choice %}
                                             <button type="submit" name="reset" value="{{ bot.key }}"
                                                     class="qc-btn qc-btn-sm qc-btn-text">

@@ -19,15 +19,14 @@ use Tools;
  * Co robot naprawdę widzi, gdy pyta o `robots.txt`.
  *
  * **Pobieramy plik po HTTP, nie z dysku.** Między jednym a drugim potrafi stanąć
- * reguła serwera, przekierowanie albo wtyczka hostingu — a robot czyta to, co
+ * reguła serwera, przekierowanie albo wtyczka hostingu, a robot czyta to, co
  * odda serwer, nie to, co leży w katalogu. Test, który zagląda na dysk, przechodzi
  * wtedy, gdy sklep jest zepsuty.
  *
- * Drugą częścią jest rozstrzygnięcie po zasadach RFC 9309, i tu jest sedno:
- * robot wybiera **jedną grupę** `User-agent` — najlepiej do siebie pasującą —
- * i pozostałe, razem z `*`, ignoruje w całości. Dlatego wypisanie botowi
- * `Allow: /` nie „dodaje mu zgody", tylko odcina go od zakazów rdzenia; ten test
- * pokazuje ten skutek zamiast opowiadać o nim.
+ * Drugą częścią jest rozstrzygnięcie po zasadach RFC 9309: robot wybiera
+ * **jedną grupę** `User-agent` (najlepiej do siebie pasującą) i pozostałe,
+ * razem z `*`, ignoruje w całości. Dlatego wypisanie botowi `Allow: /` nie
+ * „dodaje mu zgody", tylko odcina go od zakazów rdzenia.
  */
 final class RobotsTest
 {
@@ -75,8 +74,8 @@ final class RobotsTest
                 'group' => $grupa['agent'],
                 'allowed' => $wpuszczony,
                 'wanted' => $bot['effective_policy'],
-                // Rozjazd między decyzją a plikiem to jedyny powód, dla którego ten
-                // ekran istnieje. Wyszukiwarek nie pilnujemy — nimi steruje panel SEO.
+                // Rozjazd między decyzją a plikiem. Wyszukiwarek nie pilnujemy,
+                // nimi steruje panel SEO.
                 'mismatch' => $bot['category'] !== 'search'
                     && $wpuszczony !== ($bot['effective_policy'] === 'allow'),
             ];
@@ -93,7 +92,7 @@ final class RobotsTest
     }
 
     /**
-     * Adres pliku. Zawsze katalog główny domeny — `robots.txt` nie działa
+     * Adres pliku. Zawsze katalog główny domeny: `robots.txt` nie działa
      * w podkatalogu, więc sklep stojący pod `/sklep` i tak jest opisany plikiem
      * z korzenia.
      */
@@ -154,7 +153,7 @@ final class RobotsTest
      * Rozbiór pliku na grupy.
      *
      * Kolejne linie `User-agent` bez reguł między nimi tworzą **jedną** grupę
-     * o kilku nazwach — tak mówi RFC i tak pisze je większość plików.
+     * o kilku nazwach. Tak mówi RFC i tak pisze je większość plików.
      *
      * @return array<int,array{agents:array<int,string>,rules:array<int,array{allow:bool,path:string}>}>
      */
@@ -201,7 +200,7 @@ final class RobotsTest
      *
      * Wygrywa **najdłuższa** pasująca nazwa, bo tylko tak `Applebot-Extended`
      * dostaje swoją grupę zamiast tej od `Applebot`. Gdy nic nie pasuje, zostaje
-     * `*`; gdy nie ma i jej — robot nie ma żadnych zakazów.
+     * `*`. Gdy nie ma i jej, robot nie ma żadnych zakazów.
      *
      * @param array<int,array{agents:array<int,string>,rules:array<int,array{allow:bool,path:string}>}> $grupy
      *
@@ -241,7 +240,7 @@ final class RobotsTest
     /**
      * Czy strona główna jest dla tej grupy otwarta.
      *
-     * Wygrywa reguła o najdłuższej ścieżce, a przy równej długości — zezwolenie.
+     * Wygrywa reguła o najdłuższej ścieżce, a przy równej długości zezwolenie.
      * Pusta wartość przy `Disallow` znaczy „nic nie jest zabronione" i nie liczy
      * się jako reguła.
      *

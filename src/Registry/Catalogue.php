@@ -14,7 +14,7 @@ namespace Quince\Robots\Registry;
 use Quince\Robots\Storage\Options;
 
 /**
- * Spis robotów Quince — skąd bierzemy nowe wpisy.
+ * Spis robotów Quince: skąd bierzemy nowe wpisy.
  *
  * Listy nie utrzymujemy sami. Źródłem jest publiczny, utrzymywany zbiór
  * `ai-robots-txt/ai.robots.txt` (MIT), a nasza organizacja go lustruje, przekłada
@@ -23,7 +23,7 @@ use Quince\Robots\Storage\Options;
  *
  * **Sklep nie odpytuje GitHuba.** Sześćdziesiąt żądań na godzinę na adres IP
  * rozchodzi się na hostingu współdzielonym w kilka minut, a setki sklepów byłyby
- * uzależnione od cudzego repozytorium. Pobieramy jeden plik z naszej domeny —
+ * uzależnione od cudzego repozytorium. Pobieramy jeden plik z naszej domeny,
  * ten sam, z którego moduły czytają o swoich wydaniach.
  *
  * Oczekiwany kształt:
@@ -43,14 +43,14 @@ use Quince\Robots\Storage\Options;
  * }
  * ```
  *
- * Nieznane pola pomijamy — plik obsługuje też wydania modułów i motyw, a każdy
+ * Nieznane pola pomijamy: plik obsługuje też wydania modułów i motyw, a każdy
  * z nich czyta z niego co innego.
  */
 final class Catalogue
 {
     /**
      * Adres spisu. Wpisany w moduł, nie w ustawienia: pole, w które sprzedawca
-     * wpisuje dowolny adres, byłoby furtką — kto ma dostęp do panelu, wskazuje
+     * wpisuje dowolny adres, byłoby furtką. Kto ma dostęp do panelu, wskazuje
      * własny plik i moduł bierze wpisy stamtąd.
      */
     public const ADRES = 'https://quinceproject.github.io/manifest.json';

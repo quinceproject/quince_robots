@@ -30,16 +30,12 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * Dziedziczy po kontrolerze silnika, tak jak pozostałe moduły linii. Dzięki temu
  * ekran dostaje ten sam boczny pasek i tę samą powłokę co reszta panelu Quince,
- * bez kopiowania czegokolwiek — klikając w pozycję modułu nie wychodzi się poza
- * panel silnika.
- *
- * Ceną jest zależność: bez `quince_engine` moduł się nie zainstaluje. To świadomy
- * wybór właściciela projektu z 03.09.2026, zastępujący wcześniejsze założenie
- * o samodzielności modułu.
+ * a klikając w pozycję modułu nie wychodzi się poza panel silnika. Bez
+ * `quince_engine` moduł się nie zainstaluje.
  *
  * Uwaga do `trans()`: `QuinceController` dziedziczy po `FrameworkBundleAdminController`,
  * gdzie domena jest **drugim** argumentem. Nowa klasa `PrestaShopAdminController`
- * przyjmuje ją jako trzeci — pomyłka nie daje błędu, tylko napis bez tłumaczenia.
+ * przyjmuje ją jako trzeci. Pomyłka nie daje błędu, tylko napis bez tłumaczenia.
  */
 final class RobotsController extends QuinceController
 {
@@ -65,9 +61,8 @@ final class RobotsController extends QuinceController
     /**
      * Stan pliku i podgląd tego, co moduł do niego wpisuje.
      *
-     * Osobny widok, bo to jest inne pytanie niż „kogo wpuszczam". Tam zapada
-     * decyzja, tutaj sprawdza się, czy naprawdę zeszła na dysk — a plik bywa
-     * przepisywany przez rdzeń bez naszego udziału.
+     * Tu sprawdza się, czy decyzja z ekranu robotów naprawdę zeszła na dysk.
+     * Plik bywa przepisywany przez rdzeń bez naszego udziału.
      */
     public function fileAction(): Response
     {
@@ -84,9 +79,8 @@ final class RobotsController extends QuinceController
     /**
      * Ruch automatów: kto przychodzi i jak często.
      *
-     * Dwie listy, i ta druga jest ważniejsza. Pierwsza mówi, co robią roboty,
-     * o których wiemy. Druga pokazuje te, których rejestr nie zna — a nowy bot
-     * pojawia się w sieci wcześniej, niż trafia na jakąkolwiek listę.
+     * Dwie listy. Pierwsza mówi, co robią roboty, o których wiemy. Druga pokazuje
+     * automaty, których rejestr nie zna.
      */
     public function trafficAction(): Response
     {
@@ -117,7 +111,7 @@ final class RobotsController extends QuinceController
      * Sprawdzenie, co roboty naprawdę widzą.
      *
      * Plik pobieramy po HTTP, nie z dysku. Robot czyta to, co odda serwer, a między
-     * jednym a drugim potrafi stanąć reguła serwera albo przekierowanie — test
+     * jednym a drugim potrafi stanąć reguła serwera albo przekierowanie. Test
      * zaglądający na dysk przechodziłby wtedy, gdy sklep jest zepsuty.
      */
     public function testAction(): Response
@@ -137,8 +131,7 @@ final class RobotsController extends QuinceController
     /**
      * Dodanie wpisu własnego, zwykle z listy nierozpoznanych automatów.
      *
-     * Po dodaniu wracamy na ekran robotów, a nie na ruch: wpis właśnie stał się
-     * decyzją i sprzedawca ma go zobaczyć tam, gdzie decyzje mieszkają.
+     * Po dodaniu wracamy na ekran robotów, a nie na ruch.
      */
     public function addBotAction(Request $request): RedirectResponse
     {
@@ -170,7 +163,7 @@ final class RobotsController extends QuinceController
         return $this->redirectToRoute('quince_robots');
     }
 
-    /** Skasowanie wpisu własnego. Wpisów z listy nie kasujemy — te się wpuszcza. */
+    /** Skasowanie wpisu własnego. Wpisów z listy nie kasujemy, te się wpuszcza. */
     private function kasujWpis(string $klucz): RedirectResponse
     {
         if (!$this->registry->remove($klucz)) {
@@ -190,9 +183,8 @@ final class RobotsController extends QuinceController
     /**
      * Przeniesienie bota do innej kategorii.
      *
-     * Nasze zaszeregowanie bywa nietrafione — lista źródłowa opisuje boty jednym
-     * zdaniem, a część z nich robi więcej niż jedną rzecz. Od tej chwili wpis jest
-     * odporny na odświeżanie spisu: wybór sprzedawcy nie wraca do naszego.
+     * Od tej chwili wpis jest odporny na odświeżanie spisu: wybór sprzedawcy
+     * nie wraca do naszego.
      */
     private function przepnijKategorie(string $klucz, string $kategoria): RedirectResponse
     {
@@ -211,7 +203,7 @@ final class RobotsController extends QuinceController
      * Wycofanie własnej decyzji o wpisie.
      *
      * Pusta wartość znaczy „wróć do naszej rekomendacji" i jest stanem osobnym
-     * od obu decyzji — sprzedawca ma móc się wycofać, a nie tylko przestawić.
+     * od obu decyzji.
      */
     private function wycofajDecyzje(string $klucz): RedirectResponse
     {
@@ -248,9 +240,8 @@ final class RobotsController extends QuinceController
                     'rate_limit' => Options::int(Options::RATE_LIMIT, 120),
                     'rate_cooldown' => Options::int(Options::RATE_COOLDOWN, 5),
                 ],
-                // Ile wpisów włącznik ogólny faktycznie dotyczy. Bez tej liczby
-                // sprzedawca włącza egzekwowanie i nie wie, czy cokolwiek z tego
-                // wynika — a przy botach honorujących plik nie wynika nic.
+                // Ile wpisów włącznik ogólny faktycznie dotyczy. Przy botach
+                // honorujących plik egzekwowanie nic nie zmienia.
                 'enforceable' => count(array_filter(
                     $this->registry->blocked(),
                     static fn (array $b): bool => $b['respects'] === 'no' || $b['enforce_set']
@@ -267,9 +258,7 @@ final class RobotsController extends QuinceController
     /**
      * Zapis ustawień.
      *
-     * Liczby przycinamy do zakresu, zamiast odrzucać formularz. Wpisany tu zero
-     * albo milion jest pomyłką, a nie próbą ataku — poprawienie jej po cichu jest
-     * mniej kosztowne niż odesłanie sprzedawcy do formularza z błędem.
+     * Liczby przycinamy do zakresu, zamiast odrzucać formularz.
      */
     public function saveSettingsAction(Request $request): RedirectResponse
     {
@@ -301,9 +290,8 @@ final class RobotsController extends QuinceController
     /**
      * Pobranie spisu robotów i uzgodnienie go z rejestrem.
      *
-     * Brak spisu nie jest awarią — powstaje przy pierwszym wydaniu i do tego czasu
-     * moduł działa na zestawie startowym. Mówimy o tym wprost, zamiast pokazywać
-     * błąd sieci, którego sprzedawca nie ma jak naprawić.
+     * Brak spisu nie jest awarią. Powstaje przy pierwszym wydaniu i do tego czasu
+     * moduł działa na zestawie startowym, więc pokazujemy informację, nie błąd.
      */
     public function refreshIndexAction(Request $request): RedirectResponse
     {
@@ -366,15 +354,12 @@ final class RobotsController extends QuinceController
     /**
      * Zapis całego ekranu decyzji.
      *
-     * Jeden zapis, nie jeden na przełącznik. Przy dwudziestu kilku wpisach osobne
-     * zapisywanie każdego kliknięcia znaczyło tyle samo przeładowań strony, a decyzja
-     * o kategorii to zwykle kilka zmian naraz, nie jedna.
+     * Jeden zapis dla całego formularza, nie jeden na przełącznik.
      *
      * **Zapisujemy tylko to, co się zmieniło.** Formularz przysyła stan wszystkich
-     * wpisów, także nietkniętych — gdybyśmy zapisywali wszystko, każdy bot dostałby
-     * po pierwszym zapisie decyzję sprzedawcy, choć sprzedawca jej nie podjął.
-     * Odróżnienie „nie tknięte" od „wybrane tak samo" jest tu jedyną rzeczą, która
-     * chroni rekomendacje przed zamianą w wybory.
+     * wpisów, także nietkniętych. Gdybyśmy zapisywali wszystko, każdy bot dostałby
+     * po pierwszym zapisie decyzję sprzedawcy, choć sprzedawca jej nie podjął,
+     * a rekomendacje zamieniłyby się w wybory.
      */
     public function saveDecisionsAction(Request $request): RedirectResponse
     {
@@ -412,7 +397,7 @@ final class RobotsController extends QuinceController
             $wpis = $biezace[(string) $klucz] ?? null;
             $polityka = (string) $polityka;
 
-            // Wyszukiwarek nie da się stąd przestawić nawet podrobionym formularzem —
+            // Wyszukiwarek nie da się stąd przestawić nawet podrobionym formularzem:
             // steruje nimi panel SEO sklepu.
             if ($wpis === null || $wpis['category'] === 'search' || $polityka === $wpis['effective_policy']) {
                 continue;
@@ -444,8 +429,8 @@ final class RobotsController extends QuinceController
             return $this->redirectToRoute('quince_robots');
         }
 
-        // Wynik zapamiętany, nie liczony dwa razy — `rebuild()` przepisuje plik,
-        // więc wywołanie go w warunku i jeszcze raz w treści zapisałoby go dwukrotnie.
+        // Wynik zapamiętany: `rebuild()` przepisuje plik, więc wywołanie go
+        // w warunku i jeszcze raz w treści zapisałoby go dwukrotnie.
         $udane = (new RobotsFile($this->registry))->rebuild();
 
         $this->addFlash(
@@ -461,10 +446,8 @@ final class RobotsController extends QuinceController
     /**
      * Nagłówek, zakładki i podświetlenie pozycji w bocznym pasku.
      *
-     * Spis zakładek jest tutaj, a nie w każdej akcji z osobna: przy trzeciej
-     * pominięta w jednym miejscu dawałaby ekran bez paska, z którego nie da się
-     * wrócić. Wpisujemy wyłącznie trasy, które istnieją — zakładka wskazująca
-     * na trasę, której nie ma, wywraca panel przy budowaniu odnośnika.
+     * Wpisujemy wyłącznie trasy, które istnieją. Zakładka wskazująca na trasę,
+     * której nie ma, wywraca panel przy budowaniu odnośnika.
      *
      * @return array<string,mixed>
      */
@@ -489,8 +472,8 @@ final class RobotsController extends QuinceController
     }
 
     /**
-     * Po każdej zmianie decyzji plik przestaje odpowiadać rejestrowi. Mówimy o tym
-     * od razu, zamiast czekać, aż ktoś zauważy, że boty nadal chodzą.
+     * Po każdej zmianie decyzji plik przestaje odpowiadać rejestrowi, więc
+     * pokazujemy ostrzeżenie od razu.
      */
     private function poZmianie(): void
     {
@@ -503,9 +486,8 @@ final class RobotsController extends QuinceController
     }
 
     /**
-     * Nazwy kategorii dla człowieka, razem z jednym zdaniem o tym, co ta grupa
-     * robi z treścią sklepu. Bez tego zdania decyzja „wpuścić czy nie" jest
-     * zgadywaniem po nazwie.
+     * Nazwy kategorii razem z jednym zdaniem o tym, co ta grupa robi z treścią
+     * sklepu.
      *
      * @return array<string,array{name:string,hint:string}>
      */

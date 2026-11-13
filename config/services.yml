@@ -7,8 +7,7 @@ services:
     # PrestaShop wyszukuje kontrolery modułów wyrażeniem regularnym po treści pliku
     # i dopiero wtedy dokłada im tagi, dzięki którym Symfony podaje kontrolerowi jego
     # lokalizator usług. Nasz kontroler dziedziczy po `PrestaShopAdminController`,
-    # więc ten wzorzec do niego nie pasuje — deklarujemy to sami, zamiast liczyć
-    # na wykrycie.
+    # więc ten wzorzec do niego nie pasuje. Tagi deklarujemy tu jawnie.
     autoconfigure: true
     autowire: true
     tags: ['controller.service_arguments']

@@ -30,9 +30,8 @@ use Configuration;
  * `Configuration::hasKey()` **nie schodzi z zakresu globalnego do sklepu**. Wartość
  * zapisana przez `updateValue()` istnieje i `get()` ją zwraca, ale `hasKey()` mówi,
  * że jej nie ma. Odczyt oparty na `hasKey()` zwracałby więc wartość domyślną nawet
- * wtedy, gdy sprzedawca coś ustawił — i nie dałoby się tego zauważyć inaczej niż
- * po tym, że ustawienia „nie zapamiętują się". Dlatego pytamy o wartość, nie
- * o istnienie klucza.
+ * wtedy, gdy sprzedawca coś ustawił. Dlatego pytamy o wartość, nie o istnienie
+ * klucza.
  */
 final class Options
 {
@@ -90,7 +89,7 @@ final class Options
         self::FILE_STAMP => '',
     ];
 
-    /** Zakłada brakujące wartości. Istniejących nie rusza — decyzja sprzedawcy zostaje. */
+    /** Zakłada brakujące wartości. Istniejących nie rusza. */
     public static function installDefaults(): void
     {
         foreach (self::DOMYSLNE as $klucz => $wartosc) {
@@ -129,7 +128,7 @@ final class Options
     }
 
     /**
-     * Zapis. `$html` jest konieczny przy wartościach niosących JSON — bez niego
+     * Zapis. `$html` jest konieczny przy wartościach niosących JSON: bez niego
      * PrestaShop przycina treść na pierwszym znaczniku.
      */
     public static function save(string $klucz, mixed $wartosc, bool $html = false): void
@@ -141,7 +140,7 @@ final class Options
      * Wartość albo `null`, gdy klucza nie ma nigdzie.
      *
      * Najpierw zakres globalny, potem zwykły odczyt. Drugi krok jest dla wartości
-     * zapisanych wcześniejszą wersją modułu, zanim ustaliliśmy zakres — bez niego
+     * zapisanych wcześniejszą wersją modułu w zakresie sklepu. Bez niego
      * aktualizacja modułu wyglądałaby jak skasowanie ustawień.
      */
     private static function surowa(string $klucz): int|string|null
