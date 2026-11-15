@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Robots\Traffic;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Quince\Robots\Registry\BotRegistry;
 use Quince\Robots\Storage\Schema;
 

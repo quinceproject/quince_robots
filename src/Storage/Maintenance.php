@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Robots\Storage;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Quince\Robots\Traffic\RateLimit;
 use Quince\Robots\Traffic\TrafficLog;
 

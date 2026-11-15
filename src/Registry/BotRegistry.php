@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Robots\Registry;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Db;
 use Quince\Robots\Storage\Options;
 use Quince\Robots\Storage\Schema;

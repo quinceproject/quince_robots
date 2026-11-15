@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Robots\Traffic;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Potwierdzenie, że robot jest tym, za kogo się podaje.
  *
