@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Quince\Robots\Controller\Admin;
 
+use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Quince\Engine\Controller\Admin\QuinceController;
 use Quince\Robots\Registry\BotRegistry;
 use Quince\Robots\Registry\Catalogue;
@@ -45,6 +46,7 @@ final class RobotsController extends QuinceController
     {
     }
 
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function indexAction(): Response
     {
         return $this->renderPanel(
@@ -64,6 +66,7 @@ final class RobotsController extends QuinceController
      * Tu sprawdza się, czy decyzja z ekranu robotów naprawdę zeszła na dysk.
      * Plik bywa przepisywany przez rdzeń bez naszego udziału.
      */
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function fileAction(): Response
     {
         return $this->renderPanel(
@@ -82,6 +85,7 @@ final class RobotsController extends QuinceController
      * Dwie listy. Pierwsza mówi, co robią roboty, o których wiemy. Druga pokazuje
      * automaty, których rejestr nie zna.
      */
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function trafficAction(): Response
     {
         $licznik = new TrafficLog();
@@ -114,6 +118,7 @@ final class RobotsController extends QuinceController
      * jednym a drugim potrafi stanąć reguła serwera albo przekierowanie. Test
      * zaglądający na dysk przechodziłby wtedy, gdy sklep jest zepsuty.
      */
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function testAction(): Response
     {
         $wynik = (new RobotsTest($this->registry))->run();
@@ -133,6 +138,7 @@ final class RobotsController extends QuinceController
      *
      * Po dodaniu wracamy na ekran robotów, a nie na ruch.
      */
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function addBotAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_robots_bot_add', $request->request->get('_csrf_token'))) {
@@ -224,6 +230,7 @@ final class RobotsController extends QuinceController
      * Wszystkie są globalne dla instalacji, bo `robots.txt` jest jeden na instalację
      * i rozdzielanie ich po sklepach obiecywałoby wybór, którego plik nie odda.
      */
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function settingsAction(): Response
     {
         $prog = new RateLimit();
@@ -260,6 +267,7 @@ final class RobotsController extends QuinceController
      *
      * Liczby przycinamy do zakresu, zamiast odrzucać formularz.
      */
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function saveSettingsAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_robots_settings_save', $request->request->get('_csrf_token'))) {
@@ -293,6 +301,7 @@ final class RobotsController extends QuinceController
      * Brak spisu nie jest awarią. Powstaje przy pierwszym wydaniu i do tego czasu
      * moduł działa na zestawie startowym, więc pokazujemy informację, nie błąd.
      */
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function refreshIndexAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_robots_index_refresh', $request->request->get('_csrf_token'))) {
@@ -332,6 +341,7 @@ final class RobotsController extends QuinceController
     }
 
     /** Skasowanie danych po terminie, na żądanie. */
+    #[AdminSecurity("is_granted('delete', request.get('_legacy_controller'))", message: 'You do not have permission to delete this.')]
     public function purgeAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_robots_purge', $request->request->get('_csrf_token'))) {
@@ -361,6 +371,7 @@ final class RobotsController extends QuinceController
      * po pierwszym zapisie decyzję sprzedawcy, choć sprzedawca jej nie podjął,
      * a rekomendacje zamieniłyby się w wybory.
      */
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function saveDecisionsAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_robots_save', $request->request->get('_csrf_token'))) {
@@ -421,6 +432,7 @@ final class RobotsController extends QuinceController
     }
 
     /** Przepisanie `robots.txt` rękami rdzenia, razem z naszym blokiem. */
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function writeFileAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_robots_write', $request->request->get('_csrf_token'))) {

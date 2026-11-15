@@ -1,18 +1,15 @@
 # Trasy panelu modułu.
 #
-# `_legacy_controller` wskazuje zakładkę silnika, tak jak w pozostałych modułach
-# linii. Moduł nie zakłada własnej zakładki: wstawienie się do sekcji „Moduły"
-# PrestaShopa dokłada pozycję obok Marketplace'u i Menedżera modułów.
-#
+# `_legacy_controller` wskazuje własną zakładkę modułu (`AdminQuinceRobots`).
 # Zakładka jest tym, do czego odnoszą się uprawnienia pracownika, więc atrybuty
-# `#[AdminSecurity]` w kontrolerze sprawdzają prawa do ekranów Quince jako całości.
+# `#[AdminSecurity]` w kontrolerze sprawdzają prawa do tego modułu.
 
 quince_robots:
   path: quince/robots
   methods: [GET]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::indexAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince'
 
 quince_robots_file:
@@ -20,7 +17,7 @@ quince_robots_file:
   methods: [GET]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::fileAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince'
 
 quince_robots_traffic:
@@ -28,7 +25,7 @@ quince_robots_traffic:
   methods: [GET]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::trafficAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince'
 
 quince_robots_settings:
@@ -36,7 +33,7 @@ quince_robots_settings:
   methods: [GET]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::settingsAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince'
 
 # Jeden zapis dla całego ekranu decyzji. Wcześniej każdy przełącznik był osobną
@@ -46,7 +43,7 @@ quince_robots_save:
   methods: [POST]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::saveDecisionsAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince:save'
 
 quince_robots_write:
@@ -54,7 +51,7 @@ quince_robots_write:
   methods: [POST]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::writeFileAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince:write'
 
 quince_robots_settings_save:
@@ -62,7 +59,7 @@ quince_robots_settings_save:
   methods: [POST]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::saveSettingsAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince:settings'
 
 quince_robots_purge:
@@ -70,7 +67,7 @@ quince_robots_purge:
   methods: [POST]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::purgeAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince:purge'
 
 quince_robots_bot_add:
@@ -78,7 +75,7 @@ quince_robots_bot_add:
   methods: [POST]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::addBotAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince:add'
 
 quince_robots_index_refresh:
@@ -86,7 +83,7 @@ quince_robots_index_refresh:
   methods: [POST]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::refreshIndexAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince:refresh'
 
 quince_robots_test:
@@ -94,5 +91,5 @@ quince_robots_test:
   methods: [GET]
   defaults:
     _controller: Quince\Robots\Controller\Admin\RobotsController::testAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceRobots'
     _legacy_link: 'AdminQuince'
