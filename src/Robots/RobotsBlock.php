@@ -57,7 +57,7 @@ final class RobotsBlock
 
         $wiersze = [
             '',
-            self::START . ' ' . self::WERSJA . ' ' . $this->registry->stamp() . ' ===',
+            self::START . ' ' . self::WERSJA . ' ' . self::jednaLinia($this->registry->stamp()) . ' ===',
             '# Managed by the Quince Robots module. Changes made here are overwritten.',
         ];
 
@@ -66,7 +66,7 @@ final class RobotsBlock
             $wiersze[] = '# ' . $this->naglowek($kategoria);
 
             foreach ($boty as $bot) {
-                $wiersze[] = 'User-agent: ' . $bot['token'];
+                $wiersze[] = 'User-agent: ' . self::jednaLinia((string) $bot['token']);
                 $wiersze[] = 'Disallow: /';
                 $wiersze[] = '';
             }
@@ -107,6 +107,15 @@ final class RobotsBlock
         }
 
         return $out;
+    }
+
+    /**
+     * Wartość z bazy bez znaków końca linii. Token zapisany przed wprowadzeniem
+     * sprawdzenia w rejestrze nie dopisze wtedy do pliku własnej reguły.
+     */
+    private static function jednaLinia(string $wartosc): string
+    {
+        return str_replace(["\r", "\n"], '', $wartosc);
     }
 
     private function naglowek(string $kategoria): string

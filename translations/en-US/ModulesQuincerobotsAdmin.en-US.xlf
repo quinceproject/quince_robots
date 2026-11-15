@@ -452,9 +452,9 @@
         <target>That decision could not be saved.</target>
         <note>src/Controller/Admin/RobotsController.php</note>
       </trans-unit>
-      <trans-unit id="41bd91c95231d32b1a7d890d727b76f8">
-        <source>That entry could not be added. The token needs at least three characters.</source>
-        <target>That entry could not be added. The token needs at least three characters.</target>
+      <trans-unit id="d1858cf55535ca5be40a3b1648d22439">
+        <source>That entry could not be added. The token needs 3 to 128 characters: letters, digits, spaces and . _ - /</source>
+        <target>That entry could not be added. The token needs 3 to 128 characters: letters, digits, spaces and . _ - /</target>
         <note>src/Controller/Admin/RobotsController.php</note>
       </trans-unit>
       <trans-unit id="de24fd21b3a4ed7589503384852cb335">

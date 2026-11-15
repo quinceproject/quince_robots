@@ -4,6 +4,19 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2026-11-15
+
+### Security
+
+- **A bot name may contain only letters, digits, spaces and `. _ - /`.** A name with a
+  line break could add its own lines to robots.txt, for example one that blocks the
+  whole shop. Line breaks are also removed when the file is written.
+- **The traffic log cannot be flooded with invented user agents.** Above 500 different
+  unrecognised agents a day they are counted together in one row, and old entries are
+  deleted in full.
+- The rate limit runs before the DNS check of a bot, so a flood cannot keep PHP
+  processes waiting for slow DNS.
+
 ## [0.1.4] - 2026-11-15
 
 ### Security

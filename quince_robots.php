@@ -49,7 +49,7 @@ class Quince_Robots extends Module
     {
         $this->name = 'quince_robots';
         $this->tab = 'administration';
-        $this->version = '0.1.4';
+        $this->version = '0.1.5';
         $this->author = 'Quince Project';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '9.0.0', 'max' => '9.99.99'];
@@ -206,15 +206,18 @@ class Quince_Robots extends Module
 
         $agent = (string) ($_SERVER['HTTP_USER_AGENT'] ?? '');
         $ip = (string) Tools::getRemoteAddr();
-        $werdykt = $this->rozpoznaj($agent, $ip);
 
         // Próg częstości mierzy ruch, który się nie przedstawia, więc liczy
         // wszystkich, także zwykłych odwiedzających. Domyślnie wyłączony.
+        // Idzie przed rozpoznaniem, które może pytać DNS: zalew żądań odpada
+        // tu, zanim zajmie procesy PHP czekaniem na odpowiedź serwera nazw.
         if ((new RateLimit())->hit($ip)) {
             header('HTTP/1.1 429 Too Many Requests');
             header('Retry-After: 60');
             exit;
         }
+
+        $werdykt = $this->rozpoznaj($agent, $ip);
 
         $znany = $werdykt['bot'] !== '';
         $automat = $znany || (class_exists('Connection') && Connection::isBot($agent));

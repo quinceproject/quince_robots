@@ -210,8 +210,9 @@ final class BotRegistry
         $token = trim($dane['token'] ?? '');
 
         // Dwa znaki to za mało, żeby cokolwiek rozpoznać, a token „a" pasowałby
-        // do każdego nagłówka i zablokował sklep dla wszystkich.
-        if (mb_strlen($token) < 3) {
+        // do każdego nagłówka i zablokował sklep dla wszystkich. Znak nowej
+        // linii dopisałby do robots.txt własną regułę, np. `Disallow: /`.
+        if (!self::poprawnyToken($token)) {
             return '';
         }
 
@@ -302,6 +303,16 @@ final class BotRegistry
     }
 
     /**
+     * Token, który wolno zapisać: od 3 do 128 znaków, litery, cyfry, spacja
+     * i `. _ - /`. Tyle mają nazwy botów, a każdy inny znak (nowa linia,
+     * dwukropek, `*`) zmieniałby sens reguł w robots.txt.
+     */
+    public static function poprawnyToken(string $token): bool
+    {
+        return preg_match('~^[A-Za-z0-9._ \-/]{3,128}$~D', $token) === 1;
+    }
+
+    /**
      * Klucz, którego jeszcze nie ma. Przy zbiegu nazw dokładamy liczbę, zamiast
      * odmawiać.
      */
@@ -354,7 +365,9 @@ final class BotRegistry
             $klucz = (string) $klucz;
             $token = trim((string) ($dane['token'] ?? $klucz));
 
-            if (mb_strlen($token) < 3) {
+            // Spis przychodzi z sieci: wpis z dziwnym tokenem pomijamy, zamiast
+            // wpuścić go do robots.txt.
+            if (!self::poprawnyToken($token)) {
                 continue;
             }
 

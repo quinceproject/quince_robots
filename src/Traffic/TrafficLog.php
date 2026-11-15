@@ -28,6 +28,19 @@ final class TrafficLog
     /** Ile wierszy kasujemy w jednym przebiegu, żeby nie blokować tabeli. */
     private const PORCJA = 5000;
 
+    /** Ile przebiegów kasowania najwyżej w jednym sprzątaniu. */
+    private const MAX_PRZEBIEGOW = 50;
+
+    /**
+     * Ile różnych nierozpoznanych nagłówków na sklep i dzień zapisujemy osobno.
+     * Każdy wymyślony nagłówek to nowy wiersz, więc bez progu zalew żądań
+     * z losowym User-Agentem rozdyma tabelę bez końca.
+     */
+    private const LIMIT_NIEZNANYCH = 500;
+
+    /** Skrót wiersza zbiorczego dla nagłówków ponad limit. Skrót md5 nigdy tak nie wygląda. */
+    private const ZBIORCZY = 'other';
+
     /**
      * Dokłada jedno wejście do licznika.
      *
@@ -50,6 +63,13 @@ final class TrafficLog
         // Automat nierozpoznany nie ma nazwy i rozróżnia go wyłącznie nagłówek.
         $skrot = $botKey === '' ? md5($userAgent) : '';
         $teraz = date('Y-m-d H:i:s');
+
+        // Ponad limit nowy nagłówek trafia do jednego wiersza zbiorczego bez treści
+        // nagłówka. Lista nierozpoznanych go nie pokazuje, bo nie ma czego dodać.
+        if ($botKey === '' && $this->ponadLimit($idShop, $skrot)) {
+            $skrot = self::ZBIORCZY;
+            $userAgent = '';
+        }
 
         return (bool) Db::getInstance()->execute(
             'INSERT INTO `' . _DB_PREFIX_ . Schema::TABLE_DAY . '`
@@ -139,18 +159,52 @@ final class TrafficLog
         );
     }
 
-    /** Kasuje dni po terminie. Zwraca liczbę usuniętych wierszy. */
+    /**
+     * Kasuje dni po terminie. Zwraca liczbę usuniętych wierszy.
+     *
+     * Porcjami, żeby nie blokować tabeli, ale do skutku: jedna porcja na dobę
+     * nie nadążała za przyrostem. Liczba przebiegów ma górną granicę, żeby
+     * wejście do panelu nie zawisło na bardzo zaległej tabeli.
+     */
     public function purge(): int
     {
         $db = Db::getInstance();
+        $granica = $this->granica();
+        $razem = 0;
 
-        $db->execute(
-            'DELETE FROM `' . _DB_PREFIX_ . Schema::TABLE_DAY . '`
-              WHERE `day` < "' . $this->granica() . '"
-              LIMIT ' . self::PORCJA
-        );
+        for ($przebieg = 0; $przebieg < self::MAX_PRZEBIEGOW; ++$przebieg) {
+            $db->execute(
+                'DELETE FROM `' . _DB_PREFIX_ . Schema::TABLE_DAY . '`
+                  WHERE `day` < "' . $granica . '"
+                  LIMIT ' . self::PORCJA
+            );
 
-        return (int) $db->Affected_Rows();
+            $usuniete = (int) $db->Affected_Rows();
+            $razem += $usuniete;
+
+            if ($usuniete < self::PORCJA) {
+                break;
+            }
+        }
+
+        return $razem;
+    }
+
+    /**
+     * Czy ten nierozpoznany nagłówek byłby dziś nowym wierszem ponad limit.
+     * Nagłówek, który ma już swój wiersz, liczymy dalej w nim.
+     */
+    private function ponadLimit(int $idShop, string $skrot): bool
+    {
+        $db = Db::getInstance();
+        $warunek = 'FROM `' . _DB_PREFIX_ . Schema::TABLE_DAY . '`
+              WHERE `id_shop` = ' . $idShop . ' AND `day` = "' . date('Y-m-d') . '" AND `bot_key` = ""';
+
+        if ((int) $db->getValue('SELECT COUNT(*) ' . $warunek) < self::LIMIT_NIEZNANYCH) {
+            return false;
+        }
+
+        return !(bool) $db->getValue('SELECT 1 ' . $warunek . ' AND `ua_hash` = "' . pSQL($skrot) . '"');
     }
 
     private function granica(): string

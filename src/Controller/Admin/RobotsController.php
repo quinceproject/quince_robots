@@ -157,7 +157,7 @@ final class RobotsController extends QuinceController
 
         if ($klucz === '') {
             $this->addFlash('error', $this->trans(
-                'That entry could not be added. The token needs at least three characters.',
+                'That entry could not be added. The token needs 3 to 128 characters: letters, digits, spaces and . _ - /',
                 self::DOMENA
             ));
 
